@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<title>إذن طلب للطباعة</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#FFFFFF}
+a{color:#0E6B57}a:hover{color:#0A4F40}
+</style>
+</helmet>
+<div dir="rtl" style="width: 794px; height: 1123px; box-sizing: border-box; background: #FFFFFF; font-family: 'IBM Plex Sans Arabic', system-ui, sans-serif; color: #111614; padding: 56px 48px; display: flex; flex-direction: column; gap: 22px">
+  <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 24px; padding-bottom: 18px; border-bottom: 2px solid #111614">
+    <div style="display: flex; flex-direction: column; gap: 4px">
+      <span style="font-size: 24px; font-weight: 700">عسل للتجارة والتوزيع</span>
+      <span style="font-size: 14px; color: #4A544F">[عنوان الموزع] · [رقم الهاتف]</span>
+    </div>
+    <div style="display: flex; flex-direction: column; align-items: flex-start; gap: 4px">
+      <span style="font-size: 26px; font-weight: 700">إذن طلب</span>
+      <span style="font-size: 16px; font-weight: 600">رقم <span dir="ltr">#1045</span></span>
+      <span style="font-size: 14px; color: #4A544F">8 نوفمبر 2026، 4:20 م</span>
+    </div>
+  </div>
+
+  <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 32px; row-gap: 8px; font-size: 15px">
+    <div style="display: flex; gap: 8px"><span style="color: #4A544F; min-width: 70px">المحل</span><span style="font-weight: 700">[اسم المحل 2]</span></div>
+    <div style="display: flex; gap: 8px"><span style="color: #4A544F; min-width: 70px">المندوب</span><span style="font-weight: 600">[اسم المندوب 1] · <span dir="ltr">R-12</span></span></div>
+    <div style="display: flex; gap: 8px"><span style="color: #4A544F; min-width: 70px">العنوان</span><span style="font-weight: 600">[المدينة والحي]</span></div>
+    <div style="display: flex; gap: 8px"><span style="color: #4A544F; min-width: 70px">السائق</span><span style="font-weight: 600">[اسم السائق 1]</span></div>
+    <div style="display: flex; gap: 8px"><span style="color: #4A544F; min-width: 70px">الهاتف</span><span style="font-weight: 600" dir="ltr">01XXXXXXXXX</span></div>
+    <div style="display: flex; gap: 8px"><span style="color: #4A544F; min-width: 70px">الدفع</span><span style="font-weight: 600">نقدًا عند الاستلام</span></div>
+  </div>
+
+  <div style="border: 1px solid #111614; border-radius: 6px; padding: 10px 14px; font-size: 15px"><span style="font-weight: 700">ملاحظة التاجر:</span> التوصيل بعد العصر</div>
+
+  <div style="display: flex; flex-direction: column; border: 1px solid #111614; border-radius: 6px; overflow: hidden">
+    <div style="display: flex; align-items: center; background: #E9ECEA; font-size: 14px; font-weight: 700; border-bottom: 1px solid #111614">
+      <span style="width: 36px; padding: 10px 0; text-align: center; border-left: 1px solid #111614">م</span>
+      <span style="flex: 1; padding: 10px 12px; border-left: 1px solid #111614">الصنف</span>
+      <span style="width: 84px; padding: 10px 8px; text-align: center; border-left: 1px solid #111614">الوحدة</span>
+      <span style="width: 64px; padding: 10px 8px; text-align: center; border-left: 1px solid #111614">الكمية</span>
+      <span style="width: 236px; padding: 10px 8px; text-align: center">الباركود</span>
+    </div>
+    <sc-for list="{{items}}" as="it" hint-placeholder-count="4">
+      <div style="display: flex; align-items: stretch; font-size: 15px; border-bottom: 1px solid #9AA39E">
+        <span style="width: 36px; display: flex; align-items: center; justify-content: center; border-left: 1px solid #111614; font-weight: 600">{{it.n}}</span>
+        <span style="flex: 1; display: flex; flex-direction: column; justify-content: center; gap: 2px; padding: 8px 12px; border-left: 1px solid #111614">
+          <span style="font-weight: 700">{{it.name}}</span>
+          <span style="font-size: 13px; color: #4A544F">{{it.note}}</span>
+        </span>
+        <span style="width: 84px; display: flex; align-items: center; justify-content: center; border-left: 1px solid #111614; font-weight: 600">{{it.unit}}</span>
+        <span style="width: 64px; display: flex; align-items: center; justify-content: center; border-left: 1px solid #111614; font-size: 20px; font-weight: 700">{{it.qty}}</span>
+        <span style="width: 236px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; padding: 10px 0">
+          <span dir="ltr" role="img" aria-label="باركود {{it.ean}}" style="display: flex; align-items: stretch; height: 44px; padding: 0 12px; background: #FFFFFF">
+            <sc-for list="{{it.bars}}" as="b" hint-placeholder-count="30">
+              <span style="display: block; flex-shrink: 0; width: {{b.w}}px; background: {{b.bg}}"></span>
+            </sc-for>
+          </span>
+          <span dir="ltr" style="font-size: 13px; letter-spacing: 2px; font-weight: 600">{{it.ean}}</span>
+        </span>
+      </div>
+    </sc-for>
+    <div style="display: flex; justify-content: space-between; padding: 10px 14px; font-size: 15px; font-weight: 700; background: #F4F6F5">
+      <span>عدد الأصناف: {{lineCount}}</span>
+      <span style="font-size: 13px; font-weight: 500">للفاتورة: امسح عمود الباركود بالمسدس ثم أدخل الكمية.</span>
+    </div>
+  </div>
+
+  <div style="margin-top: auto; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; font-size: 14px">
+    <div style="display: flex; flex-direction: column; gap: 36px"><span style="font-weight: 700">جهّزه</span><span style="border-top: 1px solid #111614; padding-top: 4px; color: #4A544F">الاسم والتوقيع</span></div>
+    <div style="display: flex; flex-direction: column; gap: 36px"><span style="font-weight: 700">راجعه وأدخل الفاتورة</span><span style="border-top: 1px solid #111614; padding-top: 4px; color: #4A544F">الاسم والتوقيع</span></div>
+    <div style="display: flex; flex-direction: column; gap: 36px"><span style="font-weight: 700">استلمه التاجر</span><span style="border-top: 1px solid #111614; padding-top: 4px; color: #4A544F">الاسم والتوقيع</span></div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":794,"height":1123}}'>
+class Component extends DCLogic {
+  ean13(first12) {
+    const L = ['0001101','0011001','0010011','0111101','0100011','0110001','0101111','0111011','0110111','0001011'];
+    const G = ['0100111','0110011','0011011','0100001','0011101','0111001','0000101','0010001','0001001','0010111'];
+    const R = ['1110010','1100110','1101100','1000010','1011100','1001110','1010000','1000100','1001000','1110100'];
+    const P = ['LLLLLL','LLGLGG','LLGGLG','LLGGGL','LGLLGG','LGGLLG','LGGGLL','LGLGLG','LGLGGL','LGGLGL'];
+    const d = first12.split('').map(Number);
+    let sum = 0;
+    for (let i = 0; i < 12; i++) sum += d[i] * (i % 2 === 0 ? 1 : 3);
+    const check = (10 - (sum % 10)) % 10;
+    d.push(check);
+    const parity = P[d[0]];
+    let bits = '101';
+    for (let i = 1; i <= 6; i++) bits += (parity[i - 1] === 'L' ? L : G)[d[i]];
+    bits += '01010';
+    for (let i = 7; i <= 12; i++) bits += R[d[i]];
+    bits += '101';
+    const bars = [];
+    let run = 1;
+    for (let i = 1; i <= bits.length; i++) {
+      if (i < bits.length && bits[i] === bits[i - 1]) { run++; continue; }
+      bars.push({ w: run * 2, bg: bits[i - 1] === '1' ? '#000000' : '#FFFFFF' });
+      run = 1;
+    }
+    return { code: d.join(''), bars: bars };
+  }
+  renderVals() {
+    const base = [
+      { name: '[اسم الصنف 2]', code: '1002', unit: 'كرتونة', note: 'الكرتونة: 12 زجاجة', qty: 4, bc: '622100000002' },
+      { name: '[اسم الصنف 4]', code: '1004', unit: 'شيكارة', note: 'شيكارة 10 كجم', qty: 2, bc: '622100000004' },
+      { name: '[اسم الصنف 6]', code: '1006', unit: 'جالون', note: 'جالون واحد', qty: 1, bc: '622100000006' },
+      { name: '[اسم الصنف 1]', code: '1001', unit: 'علبة', note: 'علبة واحدة', qty: 5, bc: '622100000001' }
+    ];
+    const items = base.map((b, i) => {
+      const e = this.ean13(b.bc);
+      return { n: i + 1, name: b.name, code: b.code, unit: b.unit, note: b.note, qty: b.qty, ean: e.code, bars: e.bars };
+    });
+    return { items: items, lineCount: items.length };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,214 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<title>الإدارة — تجهيز الطلب</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#0E6B57}a:hover{color:#0A4F40}
+button,select{font-family:inherit}
+</style>
+</helmet>
+<div dir="rtl" style="width: 390px; height: 844px; box-sizing: border-box; background: #F5F7F6; font-family: 'IBM Plex Sans Arabic', system-ui, sans-serif; color: #17201C; display: flex; flex-direction: column; overflow: hidden">
+  <header style="background: #FFFFFF; padding: 14px 12px; display: flex; align-items: center; gap: 8px; border-bottom: 1px solid #E3E7E4; flex-shrink: 0">
+    <a href="AdminOrders.dc.html" aria-label="رجوع للطلبات" style="width: 44px; height: 44px; border-radius: 12px; display: flex; align-items: center; justify-content: center; color: #17201C; text-decoration: none">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"></path></svg>
+    </a>
+    <h1 style="margin: 0; font-size: 19px; font-weight: 700; flex: 1">طلب <span dir="ltr">#1045</span></h1>
+    <span style="font-size: 13px; font-weight: 600; padding: 5px 12px; border-radius: 14px; margin-left: 4px; background: {{pillBg}}; color: {{pillFg}}">{{status}}</span>
+  </header>
+
+  <div style="flex: 1; overflow-y: auto; padding: 14px 16px 16px; display: flex; flex-direction: column; gap: 12px">
+    <div style="background: #FFFFFF; border: 1px solid #E3E7E4; border-radius: 16px; padding: 14px; display: flex; flex-direction: column; gap: 10px; font-size: 14px">
+      <div style="display: flex; justify-content: space-between; align-items: center; gap: 8px">
+        <span style="display: flex; flex-direction: column; gap: 1px">
+          <span style="font-size: 16px; font-weight: 700">[اسم المحل 2]</span>
+          <span style="color: #5B6661">[المدينة والحي]</span>
+        </span>
+        <a href="#" aria-label="اتصال بالمحل" style="width: 44px; height: 44px; flex-shrink: 0; border-radius: 12px; border: 1px solid #C9D1CC; box-sizing: border-box; display: flex; align-items: center; justify-content: center; color: {{accent}}; text-decoration: none">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"></path></svg>
+        </a>
+      </div>
+      <div style="height: 1px; background: #EEF1EF"></div>
+      <div style="display: flex; justify-content: space-between"><span style="color: #5B6661">المندوب</span><span style="font-weight: 600">[اسم المندوب 1] · <span dir="ltr">R-12</span></span></div>
+      <div style="display: flex; justify-content: space-between"><span style="color: #5B6661">وقت الطلب</span><span style="font-weight: 600">8 نوفمبر، 4:20 م</span></div>
+      <div style="display: flex; justify-content: space-between"><span style="color: #5B6661">الدفع</span><span style="font-weight: 600">نقدًا عند الاستلام</span></div>
+      <div style="background: #FDF1DE; color: #6B2E08; border-radius: 10px; padding: 8px 12px">ملاحظة التاجر: التوصيل بعد العصر</div>
+    </div>
+
+    <div style="background: #FFFFFF; border: 1px solid #E3E7E4; border-radius: 16px; padding: 14px; display: flex; flex-direction: column; gap: 12px">
+      <div style="display: flex; justify-content: space-between; align-items: center">
+        <span style="font-size: 15px; font-weight: 700">تجهيز الأصناف</span>
+        <span style="font-size: 14px; color: #5B6661">{{done}} من {{total}}</span>
+      </div>
+      <div style="height: 6px; border-radius: 3px; background: #E3E7E4; overflow: hidden">
+        <div style="height: 6px; border-radius: 3px; background: {{accent}}; width: {{pct}}%"></div>
+      </div>
+      <sc-if value="{{isPreparing}}" hint-placeholder-val="{{ true }}">
+        <div style="display: flex; flex-direction: column; gap: 6px">
+          <label for="scanInput" style="font-size: 14px; font-weight: 600">مسح الباركود <span style="font-weight: 400; color: #5B6661">(اختياري)</span></label>
+          <div style="display: flex; gap: 8px">
+            <input id="scanInput" type="text" inputmode="numeric" dir="ltr" placeholder="6221000000000" style="flex: 1; min-width: 0; height: 48px; box-sizing: border-box; border: 2px solid {{accent}}; border-radius: 12px; padding: 0 12px; font-size: 16px; background: #FFFFFF; color: #17201C; text-align: right">
+            <button type="button" onClick="{{scanNext}}" style="height: 48px; padding: 0 18px; border: 0; border-radius: 12px; background: {{accent}}; color: #FFFFFF; font-size: 15px; font-weight: 700; cursor: pointer">تأكيد</button>
+          </div>
+          <span style="font-size: 12px; color: #5B6661">علّم على الأصناف يدويًا، أو امسحها بالمسدس للتأكد أن الصنف صحيح.</span>
+          <sc-if value="{{hasMsg}}" hint-placeholder-val="{{ false }}">
+            <div style="display: flex; gap: 8px; align-items: center; border-radius: 10px; padding: 8px 12px; font-size: 14px; font-weight: 600; background: #E3F1EB; color: #0B4A3B">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex-shrink: 0"><path d="M5 12.5l4.5 4.5L19 7.5"></path></svg>
+              <span>{{msg}}</span>
+            </div>
+          </sc-if>
+        </div>
+      </sc-if>
+      <div style="display: flex; flex-direction: column">
+        <sc-for list="{{items}}" as="it" hint-placeholder-count="4">
+          <label style="display: flex; align-items: center; gap: 12px; min-height: 56px; padding: 6px 0; border-bottom: 1px solid #EEF1EF; cursor: pointer">
+            <input type="checkbox" checked="{{it.checked}}" onChange="{{it.toggle}}" style="width: 22px; height: 22px; flex-shrink: 0; accent-color: {{it.accent}}; margin: 0">
+            <span style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 1px">
+              <span style="font-size: 15px; font-weight: 600; text-decoration: {{it.strike}}; color: {{it.nameColor}}">{{it.name}}</span>
+              <span style="font-size: 12px; color: #5B6661">{{it.unitNote}} · باركود <span dir="ltr">{{it.barcode}}</span></span>
+            </span>
+            <span style="flex-shrink: 0; display: flex; flex-direction: column; align-items: center; min-width: 52px; background: #F5F7F6; border-radius: 10px; padding: 4px 8px; line-height: 1.2">
+              <span style="font-size: 17px; font-weight: 700">{{it.qty}}</span>
+              <span style="font-size: 11px; color: #5B6661">{{it.unit}}</span>
+            </span>
+          </label>
+        </sc-for>
+      </div>
+    </div>
+
+    <sc-if value="{{showDriver}}" hint-placeholder-val="{{ true }}">
+      <div style="background: #FFFFFF; border: 1px solid #E3E7E4; border-radius: 16px; padding: 14px; display: flex; flex-direction: column; gap: 6px">
+        <label for="driver" style="font-size: 14px; font-weight: 600">السائق <span style="font-weight: 400; color: #5B6661">(اختياري)</span></label>
+        <select id="driver" style="height: 48px; border: 1px solid #C9D1CC; border-radius: 12px; padding: 0 12px; font-size: 15px; background: #FFFFFF; color: #17201C">
+          <option value="">بدون تحديد</option>
+          <option value="d1">[اسم السائق 1]</option>
+          <option value="d2">[اسم السائق 2]</option>
+        </select>
+      </div>
+    </sc-if>
+
+    <div style="background: #FFFFFF; border: 1px solid #E3E7E4; border-radius: 16px; padding: 14px; display: flex; flex-direction: column; gap: 10px">
+      <span style="font-size: 15px; font-weight: 700">الفاتورة</span>
+      <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px">
+        <a href="PrintOrder.dc.html" style="min-height: 48px; border-radius: 12px; border: 1px solid #C9D1CC; color: #17201C; text-decoration: none; display: flex; align-items: center; justify-content: center; gap: 6px; font-size: 14px; font-weight: 600; box-sizing: border-box">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 9V3h10v6"></path><rect x="4" y="9" width="16" height="8" rx="1.5"></rect><path d="M7 14h10v7H7z"></path></svg>
+          <span>طباعة إذن الطلب</span>
+        </a>
+        <button type="button" style="min-height: 48px; border-radius: 12px; border: 1px solid #C9D1CC; background: #FFFFFF; color: #17201C; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px; font-size: 14px; font-weight: 600">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"></path><path d="M14 3v5h5"></path><path d="M12 11v6"></path><path d="M9 14l3 3 3-3"></path></svg>
+          <span>تصدير Excel</span>
+        </button>
+      </div>
+      <span style="font-size: 12px; color: #5B6661">الإذن المطبوع عليه باركود كل صنف لإدخال الفاتورة بالمسدس. ملف Excel فيه الباركود والكمية والسعر للاستيراد في البرنامج الحسابي.</span>
+    </div>
+
+    <sc-if value="{{isDelivered}}" hint-placeholder-val="{{ false }}">
+      <div style="display: flex; gap: 10px; align-items: center; background: #E3F1EB; color: #0B4A3B; border-radius: 14px; padding: 14px; font-size: 15px; font-weight: 600">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex-shrink: 0"><path d="M5 12.5l4.5 4.5L19 7.5"></path></svg>
+        <span>تم التسليم وتحصيل المبلغ، وأُضيفت العمولة إلى حساب المندوب.</span>
+      </div>
+    </sc-if>
+  </div>
+
+  <sc-if value="{{notDelivered}}" hint-placeholder-val="{{ true }}">
+    <div style="padding: 10px 16px 16px; background: #FFFFFF; border-top: 1px solid #E3E7E4; flex-shrink: 0; display: flex; flex-direction: column; gap: 6px">
+      <sc-if value="{{showHint}}" hint-placeholder-val="{{ true }}">
+        <span style="font-size: 13px; color: #5B6661; text-align: center">جهّز جميع الأصناف قبل الإرسال للتوصيل</span>
+      </sc-if>
+      <button type="button" onClick="{{advance}}" disabled="{{blocked}}" style="height: 54px; border: 0; border-radius: 14px; font-size: 17px; font-weight: 700; cursor: pointer; background: {{btnBg}}; color: {{btnFg}}">{{btnLabel}}</button>
+      <button type="button" style="height: 44px; border: 0; background: transparent; color: #A1361B; font-size: 14px; font-weight: 600; cursor: pointer">إلغاء الطلب</button>
+    </div>
+  </sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"accent":{"editor":"color","default":"#0E6B57","options":["#0E6B57","#1F4E8C","#9A3412","#3F3D9E"]},"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { checked: { 0: true, 1: true }, stage: 'preparing', msg: 'تم: [اسم الصنف 4] — 2 شيكارة' };
+  }
+  toggle(i) {
+    const c = Object.assign({}, this.state.checked);
+    c[i] = !c[i];
+    this.setState({ checked: c });
+  }
+  renderVals() {
+    const accent = this.props.accent ?? '#0E6B57';
+    const base = [
+      { name: '[اسم الصنف 2]', unit: 'كرتونة', note: 'الكرتونة: 12 زجاجة', qty: 4, barcode: '6221000000021' },
+      { name: '[اسم الصنف 4]', unit: 'شيكارة', note: 'شيكارة 10 كجم', qty: 2, barcode: '6221000000045' },
+      { name: '[اسم الصنف 6]', unit: 'جالون', note: 'جالون واحد', qty: 1, barcode: '6221000000069' },
+      { name: '[اسم الصنف 1]', unit: 'علبة', note: 'علبة واحدة', qty: 5, barcode: '6221000000014' }
+    ];
+    const stage = this.state.stage;
+    const isPreparing = stage === 'preparing';
+    const items = base.map((b, i) => {
+      const checked = !!this.state.checked[i] || !isPreparing;
+      return {
+        name: b.name,
+        unit: b.unit,
+        unitNote: b.note,
+        qty: b.qty,
+        barcode: b.barcode,
+        checked: checked,
+        accent: accent,
+        strike: checked ? 'line-through' : 'none',
+        nameColor: checked ? '#5B6661' : '#17201C',
+        toggle: () => { if (isPreparing) this.toggle(i); }
+      };
+    });
+    const done = items.filter((it) => it.checked).length;
+    const total = items.length;
+    const ready = done === total;
+    const statuses = {
+      preparing: { label: 'قيد التجهيز', bg: '#FDF1DE', fg: '#8A3B0A' },
+      out: { label: 'جاري التوصيل', bg: '#E6EEFB', fg: '#1E4FA8' },
+      delivered: { label: 'تم التسليم', bg: '#E3F1EB', fg: '#0B5A47' }
+    };
+    const s = statuses[stage];
+    const blocked = isPreparing && !ready;
+    return {
+      accent: accent,
+      items: items,
+      done: done,
+      total: total,
+      pct: Math.round((done / total) * 100),
+      status: s.label,
+      pillBg: s.bg,
+      pillFg: s.fg,
+      isPreparing: isPreparing,
+      isDelivered: stage === 'delivered',
+      notDelivered: stage !== 'delivered',
+      showDriver: stage !== 'delivered',
+      showHint: blocked,
+      blocked: blocked,
+      btnBg: blocked ? '#E3E7E4' : accent,
+      btnFg: blocked ? '#5B6661' : '#FFFFFF',
+      btnLabel: isPreparing ? 'إرسال للتوصيل' : 'تم التسليم واستلام المبلغ',
+      hasMsg: !!this.state.msg,
+      msg: this.state.msg || '',
+      scanNext: () => {
+        const idx = base.findIndex((b, i) => !this.state.checked[i]);
+        if (idx < 0) return;
+        const c = Object.assign({}, this.state.checked);
+        c[idx] = true;
+        const b = base[idx];
+        this.setState({ checked: c, msg: 'تم: ' + b.name + ' — ' + b.qty + ' ' + b.unit });
+      },
+      advance: () => {
+        if (stage === 'preparing' && ready) this.setState({ stage: 'out' });
+        else if (stage === 'out') this.setState({ stage: 'delivered' });
+      }
+    };
+  }
+}
+</script>
+</body>
+</html>

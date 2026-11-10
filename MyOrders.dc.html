@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<title>طلباتي</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#0E6B57}a:hover{color:#0A4F40}
+button{font-family:inherit}
+</style>
+</helmet>
+<div dir="rtl" style="width: 390px; height: 844px; box-sizing: border-box; background: #F5F7F6; font-family: 'IBM Plex Sans Arabic', system-ui, sans-serif; color: #17201C; display: flex; flex-direction: column; overflow: hidden">
+  <header style="background: #FFFFFF; padding: 20px 16px 14px; display: flex; flex-direction: column; gap: 14px; border-bottom: 1px solid #E3E7E4; flex-shrink: 0">
+    <h1 style="margin: 0; font-size: 22px; font-weight: 700">طلباتي</h1>
+    <div style="display: flex; gap: 4px; background: #EEF1EF; border-radius: 12px; padding: 4px">
+      <button type="button" onClick="{{showCurrent}}" style="flex: 1; height: 44px; border: 0; border-radius: 10px; font-size: 15px; font-weight: 600; cursor: pointer; background: {{curBg}}; color: {{curFg}}">الحالية</button>
+      <button type="button" onClick="{{showPast}}" style="flex: 1; height: 44px; border: 0; border-radius: 10px; font-size: 15px; font-weight: 600; cursor: pointer; background: {{pastBg}}; color: {{pastFg}}">السابقة</button>
+    </div>
+  </header>
+
+  <div style="flex: 1; overflow-y: auto; padding: 14px 16px 16px; display: flex; flex-direction: column; gap: 12px">
+    <sc-for list="{{orders}}" as="o" hint-placeholder-count="2">
+      <div style="background: #FFFFFF; border-radius: 16px; border: 1px solid {{o.border}}; display: flex; flex-direction: column">
+        <button type="button" onClick="{{o.toggle}}" aria-expanded="{{o.expanded}}" style="width: 100%; border: 0; background: transparent; padding: 14px 14px 10px; text-align: right; cursor: pointer; color: #17201C; display: flex; justify-content: space-between; align-items: flex-start; gap: 8px">
+          <span style="display: flex; flex-direction: column; gap: 2px">
+            <span style="font-size: 16px; font-weight: 700" dir="ltr">{{o.no}}</span>
+            <span style="font-size: 13px; color: #5B6661">{{o.date}} · {{o.lines}} أصناف</span>
+          </span>
+          <span style="display: flex; align-items: center; gap: 8px">
+            <span style="font-size: 13px; font-weight: 600; padding: 5px 12px; border-radius: 14px; background: {{o.pillBg}}; color: {{o.pillFg}}">{{o.status}}</span>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#5B6661" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="transform: rotate({{o.rot}}deg); transition: transform 0.2s"><path d="M6 9l6 6 6-6"></path></svg>
+          </span>
+        </button>
+
+        <div style="padding: 0 14px 14px; display: flex; flex-direction: column; gap: 12px">
+          <div style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 4px">
+            <sc-for list="{{o.segs}}" as="s" hint-placeholder-count="4">
+              <div style="height: 6px; border-radius: 3px; background: {{s.bg}}"></div>
+            </sc-for>
+          </div>
+
+          <sc-if value="{{o.expanded}}" hint-placeholder-val="{{ false }}">
+            <div style="display: flex; flex-direction: column; background: #F5F7F6; border-radius: 12px; padding: 4px 12px">
+              <sc-for list="{{o.items}}" as="it" hint-placeholder-count="3">
+                <div style="display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 10px 0; border-bottom: 1px solid #E3E7E4">
+                  <span style="display: flex; flex-direction: column; gap: 1px; min-width: 0">
+                    <span style="font-size: 14px; font-weight: 600">{{it.name}}</span>
+                    <span style="font-size: 12px; color: #5B6661">{{it.unit}} · [السعر] ج.م</span>
+                  </span>
+                  <span style="font-size: 15px; font-weight: 700; flex-shrink: 0" dir="ltr">× {{it.qty}}</span>
+                </div>
+              </sc-for>
+              <div style="display: flex; justify-content: space-between; padding: 10px 0 8px; font-size: 14px">
+                <span style="color: #5B6661">إجمالي الكمية</span>
+                <span style="font-weight: 700">{{o.units}}</span>
+              </div>
+            </div>
+            <a href="MerchantComplaint.dc.html" style="align-self: flex-start; min-height: 44px; display: flex; align-items: center; gap: 6px; font-size: 14px; font-weight: 700; color: #A1361B; text-decoration: none">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12z"></path><path d="M12 8v4"></path><path d="M12 15.5h.01"></path></svg>
+              <span>عندي مشكلة في هذا الطلب</span>
+            </a>
+          </sc-if>
+
+          <div style="display: flex; justify-content: space-between; align-items: center; gap: 8px">
+            <span style="font-size: 15px; font-weight: 600">[الإجمالي] ج.م</span>
+            <sc-if value="{{o.done}}" hint-placeholder-val="{{ false }}">
+              <a href="Cart.dc.html" style="min-height: 44px; padding: 0 16px; border-radius: 12px; border: 1px solid {{o.accent}}; color: {{o.accent}}; text-decoration: none; display: flex; align-items: center; gap: 6px; font-size: 14px; font-weight: 700; box-sizing: border-box">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12a8 8 0 0 1 13.7-5.6L20 8.5"></path><path d="M20 4v4.5h-4.5"></path><path d="M20 12a8 8 0 0 1-13.7 5.6L4 15.5"></path><path d="M4 20v-4.5h4.5"></path></svg>
+                <span>إعادة الطلب</span>
+              </a>
+            </sc-if>
+            <sc-if value="{{o.active}}" hint-placeholder-val="{{ true }}">
+              <span style="font-size: 13px; color: #5B6661">كاش عند الاستلام</span>
+            </sc-if>
+          </div>
+        </div>
+      </div>
+    </sc-for>
+  </div>
+
+  <nav style="display: flex; background: #FFFFFF; border-top: 1px solid #E3E7E4; padding: 6px 8px 10px; flex-shrink: 0">
+    <a href="Catalog.dc.html" style="flex: 1; min-height: 52px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; text-decoration: none; color: #5B6661; font-size: 12px; font-weight: 500">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="4" width="7" height="7" rx="1.5"></rect><rect x="13" y="4" width="7" height="7" rx="1.5"></rect><rect x="4" y="13" width="7" height="7" rx="1.5"></rect><rect x="13" y="13" width="7" height="7" rx="1.5"></rect></svg>
+      <span>الأصناف</span>
+    </a>
+    <a href="MyOrders.dc.html" style="flex: 1; min-height: 52px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; text-decoration: none; color: {{accent}}; font-size: 12px; font-weight: 700">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="3" width="14" height="18" rx="2"></rect><path d="M9 8h6"></path><path d="M9 12h6"></path><path d="M9 16h4"></path></svg>
+      <span>طلباتي</span>
+    </a>
+    <a href="MerchantInsights.dc.html" style="flex: 1; min-height: 52px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; text-decoration: none; color: #5B6661; font-size: 12px; font-weight: 500">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20V10"></path><path d="M10 20V4"></path><path d="M16 20v-7"></path><path d="M22 20H2"></path></svg>
+      <span>ملخصي</span>
+    </a>
+    <a href="#" style="flex: 1; min-height: 52px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; text-decoration: none; color: #5B6661; font-size: 12px; font-weight: 500">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"></circle><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"></path></svg>
+      <span>حسابي</span>
+    </a>
+  </nav>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"accent":{"editor":"color","default":"#0E6B57","options":["#0E6B57","#1F4E8C","#9A3412","#3F3D9E"]},"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { tab: 'current', open: '#1048' };
+  }
+  renderVals() {
+    const accent = this.props.accent ?? '#0E6B57';
+    const statuses = {
+      sent: { label: 'تم الإرسال', step: 1, bg: '#EEF1EF', fg: '#3D4843' },
+      preparing: { label: 'قيد التجهيز', step: 2, bg: '#FDF1DE', fg: '#8A3B0A' },
+      out: { label: 'جاري التوصيل', step: 3, bg: '#E6EEFB', fg: '#1E4FA8' },
+      delivered: { label: 'تم التسليم', step: 4, bg: '#E3F1EB', fg: '#0B5A47' }
+    };
+    const units = ['كرتونة × 24', 'كرتونة × 12', 'شدّة × 6', 'كيس 10 كجم', 'كرتونة × 48', 'جالون × 4'];
+    const mk = (spec) => spec.map((pair) => ({
+      name: '[اسم الصنف ' + pair[0] + ']',
+      unit: units[(pair[0] - 1) % units.length],
+      qty: pair[1]
+    }));
+    const current = [
+      { no: '#1048', date: '9 نوفمبر', st: 'sent', items: mk([[1, 2], [3, 1], [5, 3]]) },
+      { no: '#1045', date: '8 نوفمبر', st: 'preparing', items: mk([[2, 4], [4, 2], [6, 1], [1, 5]]) },
+      { no: '#1041', date: '7 نوفمبر', st: 'out', items: mk([[3, 2], [5, 1], [2, 6]]) }
+    ];
+    const past = [
+      { no: '#1039', date: '3 نوفمبر', st: 'delivered', items: mk([[1, 3], [2, 2], [4, 1], [6, 2]]) },
+      { no: '#1031', date: '28 أكتوبر', st: 'delivered', items: mk([[5, 4], [3, 2], [1, 1], [2, 3], [6, 1]]) }
+    ];
+    const isCurrent = this.state.tab === 'current';
+    const list = isCurrent ? current : past;
+    const orders = list.map((o) => {
+      const s = statuses[o.st];
+      const expanded = this.state.open === o.no;
+      return {
+        no: o.no,
+        date: o.date,
+        lines: o.items.length,
+        items: o.items,
+        units: o.items.reduce((t, it) => t + it.qty, 0),
+        status: s.label,
+        pillBg: s.bg,
+        pillFg: s.fg,
+        segs: [1, 2, 3, 4].map((n) => ({ bg: n <= s.step ? accent : '#E3E7E4' })),
+        done: o.st === 'delivered',
+        active: o.st !== 'delivered',
+        expanded: expanded,
+        rot: expanded ? 180 : 0,
+        border: expanded ? accent : '#E3E7E4',
+        accent: accent,
+        toggle: () => this.setState({ open: expanded ? null : o.no })
+      };
+    });
+    return {
+      accent: accent,
+      orders: orders,
+      curBg: isCurrent ? '#FFFFFF' : 'transparent',
+      curFg: isCurrent ? accent : '#5B6661',
+      pastBg: isCurrent ? 'transparent' : '#FFFFFF',
+      pastFg: isCurrent ? '#5B6661' : accent,
+      showCurrent: () => this.setState({ tab: 'current' }),
+      showPast: () => this.setState({ tab: 'past' })
+    };
+  }
+}
+</script>
+</body>
+</html>

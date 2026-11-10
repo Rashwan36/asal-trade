@@ -1,0 +1,184 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<title>الإدارة — عرض جديد</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#0E6B57}a:hover{color:#0A4F40}
+button,input,select{font-family:inherit}
+</style>
+</helmet>
+<div dir="rtl" style="width: 390px; height: 844px; box-sizing: border-box; background: #F5F7F6; font-family: 'IBM Plex Sans Arabic', system-ui, sans-serif; color: #17201C; display: flex; flex-direction: column; overflow: hidden">
+  <header style="background: #FFFFFF; padding: 14px 12px; display: flex; align-items: center; gap: 8px; border-bottom: 1px solid #E3E7E4; flex-shrink: 0">
+    <a href="AdminOffers.dc.html" aria-label="رجوع للعروض" style="width: 44px; height: 44px; border-radius: 12px; display: flex; align-items: center; justify-content: center; color: #17201C; text-decoration: none">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"></path></svg>
+    </a>
+    <h1 style="margin: 0; font-size: 19px; font-weight: 700">عرض جديد</h1>
+  </header>
+
+  <div style="flex: 1; overflow-y: auto; padding: 14px 16px 16px; display: flex; flex-direction: column; gap: 12px">
+    <div style="background: #FFFFFF; border: 1px solid #E3E7E4; border-radius: 16px; padding: 14px; display: flex; flex-direction: column; gap: 10px">
+      <span style="font-size: 15px; font-weight: 700">نوع العرض</span>
+      <sc-for list="{{types}}" as="t" hint-placeholder-count="3">
+        <button type="button" onClick="{{t.pick}}" aria-pressed="{{t.on}}" style="min-height: 56px; border-radius: 12px; border: 2px solid {{t.border}}; background: {{t.bg}}; color: #17201C; cursor: pointer; display: flex; flex-direction: column; align-items: flex-start; justify-content: center; gap: 2px; padding: 8px 14px; text-align: right">
+          <span style="font-size: 15px; font-weight: 700">{{t.label}}</span>
+          <span style="font-size: 12px; color: #5B6661">{{t.hint}}</span>
+        </button>
+      </sc-for>
+    </div>
+
+    <div style="background: #FFFFFF; border: 1px solid #E3E7E4; border-radius: 16px; padding: 14px; display: flex; flex-direction: column; gap: 10px">
+      <span style="font-size: 15px; font-weight: 700">الصنف</span>
+      <div style="display: flex; align-items: center; gap: 10px; background: #F5F7F6; border-radius: 12px; padding: 10px 12px">
+        <span style="flex: 1; display: flex; flex-direction: column; gap: 1px">
+          <span style="font-size: 14px; font-weight: 700">[اسم الصنف 5]</span>
+          <span style="font-size: 12px; color: #5B6661" dir="ltr">6221000000058</span>
+        </span>
+        <button type="button" style="height: 36px; padding: 0 12px; border-radius: 10px; border: 1px solid #C9D1CC; background: #FFFFFF; color: #17201C; font-size: 13px; font-weight: 600; cursor: pointer">تغيير</button>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 6px">
+        <label for="offerUnit" style="font-size: 14px; font-weight: 600">الوحدة</label>
+        <select id="offerUnit" defaultValue="دستة" style="height: 48px; border: 1px solid #C9D1CC; border-radius: 12px; padding: 0 10px; font-size: 15px; background: #FFFFFF; color: #17201C">
+          <option value="كيس">كيس</option>
+          <option value="دستة">دستة</option>
+          <option value="كرتونة">كرتونة</option>
+        </select>
+      </div>
+    </div>
+
+    <div style="background: #FFFFFF; border: 1px solid #E3E7E4; border-radius: 16px; padding: 14px; display: flex; flex-direction: column; gap: 10px">
+      <span style="font-size: 15px; font-weight: 700">تفاصيل العرض</span>
+      <sc-if value="{{isDiscount}}" hint-placeholder-val="{{ false }}">
+        <div style="display: flex; flex-direction: column; gap: 10px">
+          <div style="display: flex; gap: 4px; background: #EEF1EF; border-radius: 12px; padding: 4px">
+            <button type="button" onClick="{{pct}}" style="flex: 1; height: 40px; border: 0; border-radius: 10px; font-size: 14px; font-weight: 600; cursor: pointer; background: {{pctBg}}; color: {{pctFg}}">نسبة %</button>
+            <button type="button" onClick="{{amt}}" style="flex: 1; height: 40px; border: 0; border-radius: 10px; font-size: 14px; font-weight: 600; cursor: pointer; background: {{amtBg}}; color: {{amtFg}}">مبلغ ج.م</button>
+          </div>
+          <div style="display: flex; flex-direction: column; gap: 6px">
+            <label for="discVal" style="font-size: 14px; font-weight: 600">{{discLabel}}</label>
+            <input id="discVal" type="text" inputmode="decimal" placeholder="10" style="height: 48px; box-sizing: border-box; border: 1px solid #C9D1CC; border-radius: 12px; padding: 0 12px; font-size: 16px; background: #FFFFFF; color: #17201C">
+          </div>
+        </div>
+      </sc-if>
+      <sc-if value="{{isGift}}" hint-placeholder-val="{{ true }}">
+        <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px">
+          <div style="display: flex; flex-direction: column; gap: 6px">
+            <label for="buyQty" style="font-size: 14px; font-weight: 600">عند طلب (دستة)</label>
+            <input id="buyQty" type="text" inputmode="numeric" defaultValue="10" style="height: 48px; box-sizing: border-box; border: 1px solid #C9D1CC; border-radius: 12px; padding: 0 12px; font-size: 16px; background: #FFFFFF; color: #17201C">
+          </div>
+          <div style="display: flex; flex-direction: column; gap: 6px">
+            <label for="freeQty" style="font-size: 14px; font-weight: 600">يحصل مجانًا على</label>
+            <input id="freeQty" type="text" inputmode="numeric" defaultValue="1" style="height: 48px; box-sizing: border-box; border: 1px solid #C9D1CC; border-radius: 12px; padding: 0 12px; font-size: 16px; background: #FFFFFF; color: #17201C">
+          </div>
+          <span style="grid-column: 1 / -1; font-size: 12px; color: #5B6661">الهدية من نفس الصنف ونفس الوحدة، وتُضاف تلقائيًا في سلة التاجر.</span>
+        </div>
+      </sc-if>
+      <sc-if value="{{isQty}}" hint-placeholder-val="{{ false }}">
+        <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px">
+          <div style="display: flex; flex-direction: column; gap: 6px">
+            <label for="minQty" style="font-size: 14px; font-weight: 600">من كمية</label>
+            <input id="minQty" type="text" inputmode="numeric" placeholder="5" style="height: 48px; box-sizing: border-box; border: 1px solid #C9D1CC; border-radius: 12px; padding: 0 12px; font-size: 16px; background: #FFFFFF; color: #17201C">
+          </div>
+          <div style="display: flex; flex-direction: column; gap: 6px">
+            <label for="qtyPrice" style="font-size: 14px; font-weight: 600">سعر الوحدة (ج.م)</label>
+            <input id="qtyPrice" type="text" inputmode="decimal" placeholder="—" style="height: 48px; box-sizing: border-box; border: 1px solid #C9D1CC; border-radius: 12px; padding: 0 12px; font-size: 16px; background: #FFFFFF; color: #17201C">
+          </div>
+        </div>
+      </sc-if>
+    </div>
+
+    <div style="background: #FFFFFF; border: 1px solid #E3E7E4; border-radius: 16px; padding: 14px; display: flex; flex-direction: column; gap: 10px">
+      <span style="font-size: 15px; font-weight: 700">المدة ومن يراه</span>
+      <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px">
+        <div style="display: flex; flex-direction: column; gap: 6px">
+          <label for="fromDate" style="font-size: 14px; font-weight: 600">من</label>
+          <input id="fromDate" type="date" defaultValue="2026-11-10" style="height: 48px; box-sizing: border-box; border: 1px solid #C9D1CC; border-radius: 12px; padding: 0 10px; font-size: 15px; background: #FFFFFF; color: #17201C; width: 100%">
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 6px">
+          <label for="toDate" style="font-size: 14px; font-weight: 600">إلى</label>
+          <input id="toDate" type="date" defaultValue="2026-11-30" style="height: 48px; box-sizing: border-box; border: 1px solid #C9D1CC; border-radius: 12px; padding: 0 10px; font-size: 15px; background: #FFFFFF; color: #17201C; width: 100%">
+        </div>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 6px">
+        <label for="audience" style="font-size: 14px; font-weight: 600">يظهر لـ</label>
+        <select id="audience" style="height: 48px; border: 1px solid #C9D1CC; border-radius: 12px; padding: 0 10px; font-size: 15px; background: #FFFFFF; color: #17201C">
+          <option>كل التجار</option>
+          <option>عملاء [اسم المندوب 1]</option>
+          <option>عملاء [اسم المندوب 2]</option>
+          <option>عملاء [اسم المندوب 3]</option>
+        </select>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 6px">
+        <label for="perMerchant" style="font-size: 14px; font-weight: 600">حد أقصى لكل تاجر <span style="font-weight: 400; color: #5B6661">(اختياري)</span></label>
+        <input id="perMerchant" type="text" inputmode="numeric" placeholder="مثلًا: مرتين خلال مدة العرض" style="height: 48px; box-sizing: border-box; border: 1px solid #C9D1CC; border-radius: 12px; padding: 0 12px; font-size: 15px; background: #FFFFFF; color: #17201C">
+      </div>
+    </div>
+
+    <div style="display: flex; flex-direction: column; gap: 6px">
+      <span style="font-size: 13px; font-weight: 700; color: #3D4843">هكذا يظهر للتاجر</span>
+      <div style="background: #FFFFFF; border: 1px dashed #A3ADA8; border-radius: 16px; padding: 12px; display: flex; gap: 12px; align-items: center">
+        <div style="position: relative; width: 56px; height: 56px; flex-shrink: 0; border-radius: 10px; background: #EEF1EF"></div>
+        <span style="display: flex; flex-direction: column; gap: 2px">
+          <span style="font-size: 14px; font-weight: 700">[اسم الصنف 5]</span>
+          <span style="align-self: flex-start; padding: 2px 8px; border-radius: 8px; background: #A1361B; color: #FFFFFF; font-size: 12px; font-weight: 700">{{previewBadge}}</span>
+          <span style="font-size: 12px; color: #8A2A14; font-weight: 600">{{previewNote}}</span>
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <div style="padding: 10px 16px 16px; background: #FFFFFF; border-top: 1px solid #E3E7E4; flex-shrink: 0">
+    <a href="AdminOffers.dc.html" style="height: 54px; border-radius: 14px; background: {{accent}}; color: #FFFFFF; text-decoration: none; display: flex; align-items: center; justify-content: center; font-size: 17px; font-weight: 700">نشر العرض</a>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"accent":{"editor":"color","default":"#0E6B57","options":["#0E6B57","#1F4E8C","#9A3412","#3F3D9E"]},"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { type: 'gift', discMode: 'pct' };
+  }
+  renderVals() {
+    const accent = this.props.accent ?? '#0E6B57';
+    const type = this.state.type;
+    const defs = [
+      ['discount', 'خصم على السعر', 'نسبة أو مبلغ يُخصم من سعر الوحدة'],
+      ['gift', 'هدية مع الكمية', 'مثل: 10 + 1 هدية من نفس الصنف'],
+      ['qty', 'سعر أقل بالكمية', 'مثل: من 5 كراتين يصبح السعر أقل']
+    ];
+    const types = defs.map((d) => {
+      const on = d[0] === type;
+      return { label: d[1], hint: d[2], on: on, border: on ? accent : '#E3E7E4', bg: on ? '#F1F8F5' : '#FFFFFF', pick: () => this.setState({ type: d[0] }) };
+    });
+    const pctOn = this.state.discMode === 'pct';
+    const previews = {
+      discount: [pctOn ? 'خصم 10%' : 'خصم 15 ج.م', 'السعر القديم يظهر مشطوبًا'],
+      gift: ['10 + 1 هدية', 'اطلب 10 دستات واحصل على دستة مجانًا'],
+      qty: ['أرخص بالكمية', 'من 5 دستات: [سعر الكمية] ج.م']
+    };
+    return {
+      accent: accent,
+      types: types,
+      isDiscount: type === 'discount',
+      isGift: type === 'gift',
+      isQty: type === 'qty',
+      pctBg: pctOn ? '#FFFFFF' : 'transparent', pctFg: pctOn ? accent : '#5B6661',
+      amtBg: pctOn ? 'transparent' : '#FFFFFF', amtFg: pctOn ? '#5B6661' : accent,
+      discLabel: pctOn ? 'نسبة الخصم %' : 'مبلغ الخصم لكل وحدة (ج.م)',
+      pct: () => this.setState({ discMode: 'pct' }),
+      amt: () => this.setState({ discMode: 'amt' }),
+      previewBadge: previews[type][0],
+      previewNote: previews[type][1]
+    };
+  }
+}
+</script>
+</body>
+</html>

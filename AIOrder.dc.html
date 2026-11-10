@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<title>اطلب بسرعة</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#0E6B57}a:hover{color:#0A4F40}
+button,textarea{font-family:inherit}
+</style>
+</helmet>
+<div dir="rtl" style="width: 390px; height: 844px; box-sizing: border-box; background: #F5F7F6; font-family: 'IBM Plex Sans Arabic', system-ui, sans-serif; color: #17201C; display: flex; flex-direction: column; overflow: hidden">
+  <header style="background: #FFFFFF; padding: 14px 12px 14px; display: flex; flex-direction: column; gap: 12px; border-bottom: 1px solid #E3E7E4; flex-shrink: 0">
+    <div style="display: flex; align-items: center; gap: 8px">
+      <a href="Catalog.dc.html" aria-label="رجوع للأصناف" style="width: 44px; height: 44px; border-radius: 12px; display: flex; align-items: center; justify-content: center; color: #17201C; text-decoration: none">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"></path></svg>
+      </a>
+      <div style="display: flex; flex-direction: column; gap: 1px">
+        <h1 style="margin: 0; font-size: 19px; font-weight: 700">اطلب بسرعة</h1>
+        <span style="font-size: 13px; color: #5B6661">اكتب أو سجّل أو صوّر طلبك، ونحوّله لسلة جاهزة</span>
+      </div>
+    </div>
+    <div style="display: flex; gap: 4px; background: #EEF1EF; border-radius: 12px; padding: 4px; margin: 0 4px">
+      <sc-for list="{{tabs}}" as="t" hint-placeholder-count="3">
+        <button type="button" onClick="{{t.pick}}" style="flex: 1; height: 44px; border: 0; border-radius: 10px; font-size: 15px; font-weight: 600; cursor: pointer; background: {{t.bg}}; color: {{t.fg}}; display: flex; align-items: center; justify-content: center; gap: 6px">{{t.label}}</button>
+      </sc-for>
+    </div>
+  </header>
+
+  <div style="flex: 1; overflow-y: auto; padding: 16px; display: flex; flex-direction: column; gap: 14px">
+    <sc-if value="{{isText}}" hint-placeholder-val="{{ true }}">
+      <div style="display: flex; flex-direction: column; gap: 8px">
+        <label for="orderText" style="font-size: 15px; font-weight: 700">اكتب طلبك بطريقتك</label>
+        <textarea id="orderText" rows="8" style="box-sizing: border-box; width: 100%; border: 1px solid #C9D1CC; border-radius: 14px; padding: 14px; font-size: 16px; line-height: 1.8; background: #FFFFFF; color: #17201C; resize: none">عايز 3 كرتونة [صنف 1]
+ودستتين [صنف 5]
+و6 شدة [صنف 3]
+و[صنف 2] 2 كرتونة
+و4 [صنف غير موجود]</textarea>
+        <span style="font-size: 13px; line-height: 1.6; color: #5B6661">اكتب الكمية والوحدة واسم الصنف، ولو بالعامية أو بأخطاء إملائية. أو الصق رسالة الطلب من الواتساب كما هي.</span>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{isVoice}}" hint-placeholder-val="{{ false }}">
+      <div style="display: flex; flex-direction: column; align-items: center; gap: 14px; padding: 24px 0">
+        <button type="button" onClick="{{toggleRec}}" aria-pressed="{{recording}}" aria-label="تسجيل الطلب بالصوت" style="width: 120px; height: 120px; border-radius: 60px; border: 0; cursor: pointer; background: {{micBg}}; color: #FFFFFF; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 0 {{ring}}px {{ringColor}}">
+          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"></rect><path d="M5 11a7 7 0 0 0 14 0"></path><path d="M12 18v3"></path></svg>
+        </button>
+        <span style="font-size: 16px; font-weight: 700">{{recLabel}}</span>
+        <span style="font-size: 13px; color: #5B6661; text-align: center; line-height: 1.6">اذكر كل صنف بكميته ووحدته، مثلًا: «تلاتة كرتونة [صنف 1] ودستتين [صنف 5]»</span>
+        <sc-if value="{{hasRecording}}" hint-placeholder-val="{{ false }}">
+          <div style="width: 100%; display: flex; align-items: center; gap: 10px; background: #FFFFFF; border: 1px solid #E3E7E4; border-radius: 14px; padding: 10px 12px; box-sizing: border-box">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="{{accent}}" aria-hidden="true"><path d="M8 5v14l11-7z"></path></svg>
+            <span style="flex: 1; height: 24px; background: repeating-linear-gradient(90deg, #B9D3C9 0 3px, transparent 3px 6px); border-radius: 4px"></span>
+            <span style="font-size: 13px; font-weight: 600" dir="ltr">0:18</span>
+          </div>
+        </sc-if>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{isPhoto}}" hint-placeholder-val="{{ false }}">
+      <div style="display: flex; flex-direction: column; gap: 12px">
+        <div style="height: 220px; border-radius: 16px; border: 1px dashed #A3ADA8; background: #FFFFFF; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; color: #3D4843; padding: 16px; box-sizing: border-box; text-align: center">
+          <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 8h3l2-3h6l2 3h3v11H4z"></path><circle cx="12" cy="13" r="3.5"></circle></svg>
+          <span style="font-size: 15px; font-weight: 700">صوّر ورقة الطلب</span>
+          <span style="font-size: 13px; color: #5B6661">ورقة مكتوبة بخط اليد، أو صورة شاشة لرسالة الطلب</span>
+        </div>
+        <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px">
+          <button type="button" style="height: 48px; border-radius: 12px; border: 0; background: {{accent}}; color: #FFFFFF; font-size: 15px; font-weight: 700; cursor: pointer">التقاط صورة</button>
+          <button type="button" style="height: 48px; border-radius: 12px; border: 1px solid #C9D1CC; background: #FFFFFF; color: #17201C; font-size: 15px; font-weight: 600; cursor: pointer">من المعرض</button>
+        </div>
+        <span style="font-size: 13px; line-height: 1.6; color: #5B6661">لنتيجة أدق: صنف في كل سطر، والكمية بجانبه، وإضاءة جيدة.</span>
+      </div>
+    </sc-if>
+  </div>
+
+  <div style="padding: 10px 16px 16px; background: #FFFFFF; border-top: 1px solid #E3E7E4; flex-shrink: 0; display: flex; flex-direction: column; gap: 6px">
+    <a href="AIOrderReview.dc.html" style="height: 54px; border-radius: 14px; background: {{accent}}; color: #FFFFFF; text-decoration: none; display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 17px; font-weight: 700">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l1.8 4.7L18.5 9.5l-4.7 1.8L12 16l-1.8-4.7L5.5 9.5l4.7-1.8z"></path><path d="M19 15l.8 2.2L22 18l-2.2.8L19 21l-.8-2.2L16 18l2.2-.8z"></path></svg>
+      <span>حوّل لسلة</span>
+    </a>
+    <span style="font-size: 12px; color: #5B6661; text-align: center">ستراجع الأصناف قبل إضافتها للسلة</span>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"accent":{"editor":"color","default":"#0E6B57","options":["#0E6B57","#1F4E8C","#9A3412","#3F3D9E"]},"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { tab: 'text', rec: 'idle' };
+  }
+  renderVals() {
+    const accent = this.props.accent ?? '#0E6B57';
+    const tab = this.state.tab;
+    const tabs = [['text', 'كتابة'], ['voice', 'صوت'], ['photo', 'صورة']].map((t) => {
+      const on = t[0] === tab;
+      return { label: t[1], bg: on ? '#FFFFFF' : 'transparent', fg: on ? accent : '#5B6661', pick: () => this.setState({ tab: t[0] }) };
+    });
+    const rec = this.state.rec;
+    const recording = rec === 'recording';
+    return {
+      accent: accent,
+      tabs: tabs,
+      isText: tab === 'text',
+      isVoice: tab === 'voice',
+      isPhoto: tab === 'photo',
+      recording: recording,
+      hasRecording: rec === 'done',
+      micBg: recording ? '#A1361B' : accent,
+      ring: recording ? 14 : 0,
+      ringColor: recording ? 'rgba(161,54,27,0.18)' : 'transparent',
+      recLabel: recording ? 'جارٍ التسجيل… اضغط للإيقاف' : (rec === 'done' ? 'تم التسجيل — اضغط لإعادة التسجيل' : 'اضغط وتكلّم'),
+      toggleRec: () => this.setState({ rec: recording ? 'done' : 'recording' })
+    };
+  }
+}
+</script>
+</body>
+</html>

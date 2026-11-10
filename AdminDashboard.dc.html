@@ -1,0 +1,190 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<title>الإدارة — الرئيسية</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#0E6B57}a:hover{color:#0A4F40}
+button{font-family:inherit}
+</style>
+</helmet>
+<div dir="rtl" style="width: 390px; height: 844px; box-sizing: border-box; background: #F5F7F6; font-family: 'IBM Plex Sans Arabic', system-ui, sans-serif; color: #17201C; display: flex; flex-direction: column; overflow: hidden">
+  <header style="background: #FFFFFF; padding: 20px 16px 12px; display: flex; flex-direction: column; gap: 12px; border-bottom: 1px solid #E3E7E4; flex-shrink: 0">
+    <div style="display: flex; align-items: center; justify-content: space-between; gap: 12px">
+      <h1 style="margin: 0; font-size: 22px; font-weight: 700">الرئيسية</h1>
+      <span style="font-size: 11px; font-weight: 600; padding: 3px 8px; border-radius: 8px; background: #EEF1EF; color: #3D4843">أرقام توضيحية</span>
+    </div>
+    <div style="display: flex; gap: 4px; background: #EEF1EF; border-radius: 12px; padding: 4px">
+      <sc-for list="{{periods}}" as="p" hint-placeholder-count="3">
+        <button type="button" onClick="{{p.pick}}" style="flex: 1; height: 40px; border: 0; border-radius: 10px; font-size: 14px; font-weight: 600; cursor: pointer; background: {{p.bg}}; color: {{p.fg}}">{{p.label}}</button>
+      </sc-for>
+    </div>
+  </header>
+
+  <div style="flex: 1; overflow-y: auto; padding: 14px 16px 16px; display: flex; flex-direction: column; gap: 12px">
+    <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px">
+      <sc-for list="{{kpis}}" as="k" hint-placeholder-count="4">
+        <div style="background: #FFFFFF; border: 1px solid #E3E7E4; border-radius: 14px; padding: 12px; display: flex; flex-direction: column; gap: 2px">
+          <span style="font-size: 12px; color: #5B6661">{{k.label}}</span>
+          <span style="font-size: 20px; font-weight: 700">{{k.value}}</span>
+          <span style="font-size: 12px; font-weight: 600; color: {{k.deltaColor}}">{{k.delta}}</span>
+        </div>
+      </sc-for>
+    </div>
+
+    <div style="background: #FFFFFF; border: 1px solid #E3E7E4; border-radius: 16px; padding: 14px; display: flex; flex-direction: column; gap: 10px">
+      <div style="display: flex; align-items: center; gap: 8px">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="{{accent}}" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18h6"></path><path d="M10 21h4"></path><path d="M12 3a6 6 0 0 0-3.5 10.9c.6.5 1 1.2 1 2.1h5c0-.9.4-1.6 1-2.1A6 6 0 0 0 12 3z"></path></svg>
+        <span style="font-size: 15px; font-weight: 700">توصيات اليوم</span>
+      </div>
+      <sc-for list="{{recs}}" as="r" hint-placeholder-count="5">
+        <div style="display: flex; gap: 10px; padding: 10px 0; border-top: 1px solid #EEF1EF">
+          <span style="width: 6px; flex-shrink: 0; border-radius: 3px; background: {{r.color}}"></span>
+          <span style="flex: 1; display: flex; flex-direction: column; gap: 6px">
+            <span style="font-size: 14px; font-weight: 600; line-height: 1.5">{{r.text}}</span>
+            <a href="{{r.href}}" style="align-self: flex-start; min-height: 36px; display: flex; align-items: center; font-size: 13px; font-weight: 700; color: {{r.accent}}; text-decoration: none">{{r.action}}</a>
+          </span>
+        </div>
+      </sc-for>
+    </div>
+
+    <div style="background: #FFFFFF; border: 1px solid #E3E7E4; border-radius: 16px; padding: 14px; display: flex; flex-direction: column; gap: 10px">
+      <span style="font-size: 15px; font-weight: 700">{{chartTitle}}</span>
+      <div role="img" aria-label="{{chartTitle}}" style="display: flex; align-items: flex-end; gap: 8px; height: 110px">
+        <sc-for list="{{bars}}" as="b" hint-placeholder-count="7">
+          <div style="flex: 1; height: 100%; display: flex; flex-direction: column; justify-content: flex-end; align-items: center; gap: 4px">
+            <span style="font-size: 10px; color: #3D4843; font-weight: 600">{{b.v}}</span>
+            <div style="width: 100%; border-radius: 5px 5px 2px 2px; background: {{b.bg}}; height: {{b.h}}px"></div>
+          </div>
+        </sc-for>
+      </div>
+      <div style="display: flex; gap: 8px">
+        <sc-for list="{{bars}}" as="b" hint-placeholder-count="7">
+          <span style="flex: 1; text-align: center; font-size: 11px; color: #5B6661">{{b.label}}</span>
+        </sc-for>
+      </div>
+    </div>
+
+    <div style="background: #FFFFFF; border: 1px solid #E3E7E4; border-radius: 16px; padding: 14px; display: flex; flex-direction: column; gap: 10px">
+      <span style="font-size: 15px; font-weight: 700">الأكثر مبيعًا</span>
+      <sc-for list="{{top}}" as="t" hint-placeholder-count="5">
+        <div style="display: flex; flex-direction: column; gap: 4px">
+          <div style="display: flex; justify-content: space-between; font-size: 13px">
+            <span style="font-weight: 600">{{t.name}}</span>
+            <span style="color: #3D4843">{{t.value}}</span>
+          </div>
+          <div style="height: 8px; border-radius: 4px; background: #EEF1EF; overflow: hidden">
+            <div style="height: 8px; border-radius: 4px; background: {{t.accent}}; width: {{t.pct}}%"></div>
+          </div>
+        </div>
+      </sc-for>
+    </div>
+
+    <div style="background: #FFFFFF; border: 1px solid #E3E7E4; border-radius: 16px; padding: 14px; display: flex; flex-direction: column; gap: 6px">
+      <span style="font-size: 15px; font-weight: 700; margin-bottom: 4px">أداء المندوبين</span>
+      <div style="display: grid; grid-template-columns: 1.4fr 1fr 0.7fr 0.8fr; gap: 6px; font-size: 12px; color: #5B6661; padding-bottom: 6px; border-bottom: 1px solid #E3E7E4">
+        <span>المندوب</span><span>المبيعات</span><span>طلبات</span><span>عملاء جدد</span>
+      </div>
+      <sc-for list="{{reps}}" as="r" hint-placeholder-count="3">
+        <div style="display: grid; grid-template-columns: 1.4fr 1fr 0.7fr 0.8fr; gap: 6px; font-size: 13px; padding: 6px 0; border-bottom: 1px solid #EEF1EF; align-items: center">
+          <span style="font-weight: 600">{{r.name}}</span><span>{{r.sales}}</span><span>{{r.orders}}</span><span style="font-weight: 600; color: {{r.newColor}}">{{r.fresh}}</span>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+
+  <nav style="display: flex; background: #FFFFFF; border-top: 1px solid #E3E7E4; padding: 6px 2px 10px; flex-shrink: 0">
+    <a href="AdminDashboard.dc.html" style="flex: 1; min-height: 52px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; text-decoration: none; color: {{accent}}; font-size: 12px; font-weight: 700">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20V10"></path><path d="M10 20V4"></path><path d="M16 20v-7"></path><path d="M22 20H2"></path></svg>
+      <span>الرئيسية</span>
+    </a>
+    <a href="AdminOrders.dc.html" style="flex: 1; min-height: 52px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; text-decoration: none; color: #5B6661; font-size: 12px; font-weight: 500">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="3" width="14" height="18" rx="2"></rect><path d="M9 8h6"></path><path d="M9 12h6"></path><path d="M9 16h4"></path></svg>
+      <span>الطلبات</span>
+    </a>
+    <a href="AdminProducts.dc.html" style="flex: 1; min-height: 52px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; text-decoration: none; color: #5B6661; font-size: 12px; font-weight: 500">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 8l-9-5-9 5v8l9 5 9-5V8z"></path><path d="M3 8l9 5 9-5"></path><path d="M12 13v8"></path></svg>
+      <span>الأصناف</span>
+    </a>
+    <a href="AdminMerchants.dc.html" style="flex: 1; min-height: 52px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; text-decoration: none; color: #5B6661; font-size: 12px; font-weight: 500">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 10l1.5-5h13L20 10"></path><path d="M4 10h16v10H4z"></path><path d="M10 20v-5h4v5"></path></svg>
+      <span>التجار</span>
+    </a>
+    <a href="AdminReps.dc.html" style="flex: 1; min-height: 52px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; text-decoration: none; color: #5B6661; font-size: 12px; font-weight: 500">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="8" r="3.5"></circle><path d="M2.5 20c1-3.5 3.5-5.5 6.5-5.5s5.5 2 6.5 5.5"></path><path d="M16 4.5a3.5 3.5 0 0 1 0 7"></path><path d="M18 14.8c1.8.8 3 2.6 3.5 5.2"></path></svg>
+      <span>المندوبين</span>
+    </a>
+    <a href="AdminStaff.dc.html" style="flex: 1; min-height: 52px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; text-decoration: none; color: #5B6661; font-size: 12px; font-weight: 500">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l8 3v6c0 4.5-3.4 8-8 9-4.6-1-8-4.5-8-9V6l8-3z"></path><path d="M9 12l2 2 4-4"></path></svg>
+      <span>الحسابات</span>
+    </a>
+  </nav>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"accent":{"editor":"color","default":"#0E6B57","options":["#0E6B57","#1F4E8C","#9A3412","#3F3D9E"]},"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { period: 'week' };
+  }
+  renderVals() {
+    const accent = this.props.accent ?? '#0E6B57';
+    const data = {
+      today: {
+        kpis: [['المبيعات المسلّمة', '64,300 ج.م', '+8% عن أمس', 1], ['الطلبات', '23', '+3 عن أمس', 1], ['متوسط الطلب', '2,795 ج.م', '-2% عن أمس', -1], ['تجار طلبوا', '21', 'من 118 تاجرًا', 0]],
+        title: 'المبيعات حسب الساعة',
+        bars: [['9ص', 4.2], ['11ص', 9.8], ['1م', 12.4], ['3م', 15.1], ['5م', 11.6], ['7م', 7.3], ['9م', 3.9]]
+      },
+      week: {
+        kpis: [['المبيعات المسلّمة', '412,800 ج.م', '+11% عن الأسبوع الماضي', 1], ['الطلبات', '146', '+14 طلبًا', 1], ['متوسط الطلب', '2,827 ج.م', '+1%', 1], ['تجار طلبوا', '86', 'من 118 تاجرًا', 0]],
+        title: 'المبيعات آخر 7 أيام (ألف ج.م)',
+        bars: [['السبت', 52], ['الأحد', 61], ['الاثنين', 58], ['الثلاثاء', 66], ['الأربعاء', 71], ['الخميس', 64], ['الجمعة', 41]]
+      },
+      month: {
+        kpis: [['المبيعات المسلّمة', '1.62 مليون ج.م', '+6% عن أكتوبر', 1], ['الطلبات', '571', '+22 طلبًا', 1], ['متوسط الطلب', '2,840 ج.م', '+2%', 1], ['تجار طلبوا', '104', 'من 118 تاجرًا', 0]],
+        title: 'المبيعات آخر 6 شهور (ألف ج.م)',
+        bars: [['يونيو', 1310], ['يوليو', 1420], ['أغسطس', 1380], ['سبتمبر', 1490], ['أكتوبر', 1530], ['نوفمبر', 1620]]
+      }
+    };
+    const d = data[this.state.period];
+    const kpis = d.kpis.map((k) => ({ label: k[0], value: k[1], delta: k[2], deltaColor: k[3] > 0 ? '#0B5A47' : (k[3] < 0 ? '#A1361B' : '#5B6661') }));
+    const max = Math.max.apply(null, d.bars.map((b) => b[1]));
+    const bars = d.bars.map((b, i) => ({ label: b[0], v: String(b[1]), h: Math.round((b[1] / max) * 80), bg: i === d.bars.length - 1 && this.state.period !== 'today' ? accent : '#B9D3C9' }));
+    const periods = [['today', 'اليوم'], ['week', 'الأسبوع'], ['month', 'الشهر']].map((p) => {
+      const on = p[0] === this.state.period;
+      return { label: p[1], bg: on ? '#FFFFFF' : 'transparent', fg: on ? accent : '#5B6661', pick: () => this.setState({ period: p[0] }) };
+    });
+    const topRaw = [['[اسم الصنف 1]', 1840], ['[اسم الصنف 5]', 1420], ['[اسم الصنف 2]', 1105], ['[اسم الصنف 3]', 960], ['[اسم الصنف 6]', 610]];
+    const top = topRaw.map((t) => ({ name: t[0], value: t[1].toLocaleString('en-US') + ' وحدة', pct: Math.round((t[1] / topRaw[0][1]) * 100), accent: accent }));
+    return {
+      accent: accent,
+      periods: periods,
+      kpis: kpis,
+      chartTitle: d.title,
+      bars: bars,
+      top: top,
+      recs: [
+        { text: '5 طلبات جديدة لم يبدأ تجهيزها منذ أكثر من ساعتين.', action: 'افتح الطلبات الجديدة', href: 'AdminOrders.dc.html', color: '#C2410C', accent: accent },
+        { text: '14 تاجرًا كانوا يطلبون أسبوعيًا ولم يطلبوا منذ أكثر من 21 يومًا.', action: 'أرسل القائمة لمندوبيهم', href: 'AdminMerchants.dc.html', color: '#C2410C', accent: accent },
+        { text: '3 أصناف من الأكثر طلبًا غير متوفرة، وكانت في 38 طلبًا الشهر الماضي.', action: 'راجع الأصناف غير المتوفرة', href: 'AdminProducts.dc.html', color: '#B4690E', accent: accent },
+        { text: 'تاجران ينتظران التفعيل منذ أكثر من يوم.', action: 'راجع التجار الجدد', href: 'AdminMerchants.dc.html', color: '#B4690E', accent: accent },
+        { text: 'مبيعات [اسم الصنف 5] زادت 40% هذا الأسبوع. تأكد من كفاية المخزون.', action: 'افتح الصنف', href: 'AdminProductEdit.dc.html', color: '#1E4FA8', accent: accent }
+      ],
+      reps: [
+        { name: '[المندوب 2]', sales: '182,400', orders: '64', fresh: '+3', newColor: '#0B5A47' },
+        { name: '[المندوب 1]', sales: '151,900', orders: '55', fresh: '+1', newColor: '#0B5A47' },
+        { name: '[المندوب 3]', sales: '78,500', orders: '27', fresh: '0', newColor: '#A1361B' }
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>

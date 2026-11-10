@@ -1,0 +1,212 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<title>الإدارة — استيراد الأصناف والصور</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#0E6B57}a:hover{color:#0A4F40}
+button,input{font-family:inherit}
+</style>
+</helmet>
+<div dir="rtl" style="width: 390px; height: 844px; box-sizing: border-box; background: #F5F7F6; font-family: 'IBM Plex Sans Arabic', system-ui, sans-serif; color: #17201C; display: flex; flex-direction: column; overflow: hidden">
+  <header style="background: #FFFFFF; padding: 14px 12px 12px; display: flex; flex-direction: column; gap: 12px; border-bottom: 1px solid #E3E7E4; flex-shrink: 0">
+    <div style="display: flex; align-items: center; gap: 8px">
+      <a href="AdminProducts.dc.html" aria-label="رجوع للأصناف" style="width: 44px; height: 44px; border-radius: 12px; display: flex; align-items: center; justify-content: center; color: #17201C; text-decoration: none">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"></path></svg>
+      </a>
+      <h1 style="margin: 0; font-size: 19px; font-weight: 700">استيراد جماعي</h1>
+    </div>
+    <div style="display: flex; gap: 4px; background: #EEF1EF; border-radius: 12px; padding: 4px; margin: 0 4px">
+      <button type="button" onClick="{{showExcel}}" style="flex: 1; height: 44px; border: 0; border-radius: 10px; font-size: 15px; font-weight: 600; cursor: pointer; background: {{xBg}}; color: {{xFg}}">الأصناف من إكسل</button>
+      <button type="button" onClick="{{showImages}}" style="flex: 1; height: 44px; border: 0; border-radius: 10px; font-size: 15px; font-weight: 600; cursor: pointer; background: {{iBg}}; color: {{iFg}}">صور الأصناف</button>
+    </div>
+  </header>
+
+  <div style="flex: 1; overflow-y: auto; padding: 14px 16px 16px; display: flex; flex-direction: column; gap: 12px">
+
+    <sc-if value="{{isExcel}}" hint-placeholder-val="{{ true }}">
+      <div style="background: #FFFFFF; border: 1px solid #E3E7E4; border-radius: 16px; padding: 14px; display: flex; flex-direction: column; gap: 10px">
+        <span style="font-size: 15px; font-weight: 700">1. نزّل التمبلت واملأه</span>
+        <span style="font-size: 13px; line-height: 1.6; color: #5B6661">صنف في كل سطر، حتى 3 وحدات لكل صنف بأسعارها. أقسامك الحالية مكتوبة داخل الملف.</span>
+        <button type="button" style="height: 48px; border-radius: 12px; border: 1px solid {{accent}}; background: #FFFFFF; color: {{accent}}; font-size: 15px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11"></path><path d="M7 10l5 5 5-5"></path><path d="M5 20h14"></path></svg>
+          <span>تنزيل التمبلت (Excel)</span>
+        </button>
+      </div>
+
+      <div style="background: #FFFFFF; border: 1px solid #E3E7E4; border-radius: 16px; padding: 14px; display: flex; flex-direction: column; gap: 10px">
+        <span style="font-size: 15px; font-weight: 700">2. ارفع الملف بعد التعبئة</span>
+        <sc-if value="{{xIdle}}" hint-placeholder-val="{{ true }}">
+          <button type="button" onClick="{{uploadExcel}}" style="height: 96px; border-radius: 12px; border: 1px dashed #A3ADA8; background: #F5F7F6; color: #3D4843; cursor: pointer; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; font-size: 14px; font-weight: 600">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 16V5"></path><path d="M7 10l5-5 5 5"></path><path d="M5 20h14"></path></svg>
+            <span>اختيار ملف xlsx</span>
+          </button>
+        </sc-if>
+        <sc-if value="{{xFile}}" hint-placeholder-val="{{ false }}">
+          <div style="display: flex; align-items: center; gap: 10px; background: #F5F7F6; border-radius: 12px; padding: 10px 12px">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0E6B57" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"></path><path d="M14 3v5h5"></path><path d="M9 13l3 4"></path><path d="M12 13l-3 4"></path></svg>
+            <span style="flex: 1; font-size: 14px; font-weight: 600" dir="ltr">products_import.xlsx</span>
+          </div>
+        </sc-if>
+      </div>
+
+      <sc-if value="{{xChecked}}" hint-placeholder-val="{{ false }}">
+        <div style="background: #FFFFFF; border: 1px solid #E3E7E4; border-radius: 16px; padding: 14px; display: flex; flex-direction: column; gap: 12px">
+          <span style="font-size: 15px; font-weight: 700">نتيجة الفحص</span>
+          <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px">
+            <div style="background: #E3F1EB; border-radius: 12px; padding: 10px; display: flex; flex-direction: column; gap: 2px">
+              <span style="font-size: 20px; font-weight: 700; color: #0B4A3B">1,840</span>
+              <span style="font-size: 12px; color: #0B4A3B">صنف جديد</span>
+            </div>
+            <div style="background: #E6EEFB; border-radius: 12px; padding: 10px; display: flex; flex-direction: column; gap: 2px">
+              <span style="font-size: 20px; font-weight: 700; color: #1E4FA8">95</span>
+              <span style="font-size: 12px; color: #1E4FA8">تحديث موجود</span>
+            </div>
+            <div style="background: #FBE9E5; border-radius: 12px; padding: 10px; display: flex; flex-direction: column; gap: 2px">
+              <span style="font-size: 20px; font-weight: 700; color: #8A2A14">3</span>
+              <span style="font-size: 12px; color: #8A2A14">أسطر بها أخطاء</span>
+            </div>
+          </div>
+          <div style="display: flex; flex-direction: column; border: 1px solid #F1D3CB; border-radius: 12px; overflow: hidden; font-size: 13px">
+            <div style="padding: 8px 12px; border-bottom: 1px solid #F1D3CB">سطر 14: سعر الوحدة 1 فارغ</div>
+            <div style="padding: 8px 12px; border-bottom: 1px solid #F1D3CB">سطر 203: القسم غير موجود في ورقة القوائم</div>
+            <div style="padding: 8px 12px">سطر 877: الباركود مكرر مع سطر 512</div>
+          </div>
+          <div style="display: flex; gap: 8px; align-items: flex-start; background: #FDF1DE; color: #6B2E08; border-radius: 12px; padding: 10px 12px; font-size: 13px; line-height: 1.6">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex-shrink: 0; margin-top: 2px"><circle cx="12" cy="12" r="9"></circle><path d="M12 11v5"></path><path d="M12 8h.01"></path></svg>
+            <span><span style="font-weight: 700">الإتاحة:</span> 3 أصناف ستصبح غير متوفرة (مكتوب فيها «لا»). الأصناف التي خانة «متوفر» فيها فارغة تبقى على حالتها.</span>
+          </div>
+          <button type="button" style="height: 44px; border-radius: 12px; border: 1px solid #C9D1CC; background: #FFFFFF; color: #17201C; font-size: 14px; font-weight: 600; cursor: pointer">تنزيل ملف الأخطاء لتصحيحها</button>
+          <label style="display: flex; align-items: center; gap: 10px; min-height: 44px; font-size: 14px; cursor: pointer">
+            <input type="checkbox" checked="{{updatePrices}}" onChange="{{toggleUpdate}}" style="width: 20px; height: 20px; margin: 0; accent-color: {{accent}}">
+            <span>تحديث بيانات وأسعار الأصناف الموجودة</span>
+          </label>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{xDone}}" hint-placeholder-val="{{ false }}">
+        <div style="display: flex; gap: 10px; align-items: flex-start; background: #E3F1EB; color: #0B4A3B; border-radius: 14px; padding: 14px; font-size: 15px; font-weight: 600; line-height: 1.6">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex-shrink: 0; margin-top: 2px"><path d="M5 12.5l4.5 4.5L19 7.5"></path></svg>
+          <span>تم استيراد {{importCount}} صنف وأصبحت ظاهرة للتجار. الأسطر التي بها أخطاء لم تُستورد.</span>
+        </div>
+      </sc-if>
+    </sc-if>
+
+    <sc-if value="{{isImages}}" hint-placeholder-val="{{ false }}">
+      <div style="background: #FFFFFF; border: 1px solid #E3E7E4; border-radius: 16px; padding: 14px; display: flex; flex-direction: column; gap: 10px">
+        <span style="font-size: 15px; font-weight: 700">سمِّ كل صورة بباركود الصنف</span>
+        <div style="display: grid; grid-template-columns: auto 1fr; column-gap: 12px; row-gap: 6px; font-size: 14px">
+          <span style="font-weight: 700" dir="ltr">6221000000058.jpg</span><span style="color: #5B6661">الصورة الرئيسية للصنف</span>
+          <span style="font-weight: 700" dir="ltr">6221000000058-2.jpg</span><span style="color: #5B6661">صورة إضافية لنفس الصنف</span>
+        </div>
+        <span style="font-size: 13px; color: #5B6661">jpg أو png أو webp. ارفع الصور كلها مرة واحدة أو في ملف zip.</span>
+      </div>
+
+      <sc-if value="{{iIdle}}" hint-placeholder-val="{{ true }}">
+        <button type="button" onClick="{{uploadImages}}" style="height: 110px; border-radius: 16px; border: 1px dashed #A3ADA8; background: #FFFFFF; color: #3D4843; cursor: pointer; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; font-size: 14px; font-weight: 600">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"></rect><circle cx="9" cy="10" r="1.8"></circle><path d="M21 16l-5-5-8 8"></path></svg>
+          <span>اختيار الصور أو ملف zip</span>
+        </button>
+      </sc-if>
+
+      <sc-if value="{{iMatched}}" hint-placeholder-val="{{ false }}">
+        <div style="background: #FFFFFF; border: 1px solid #E3E7E4; border-radius: 16px; padding: 14px; display: flex; flex-direction: column; gap: 12px">
+          <span style="font-size: 15px; font-weight: 700">نتيجة الربط</span>
+          <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px">
+            <div style="background: #E3F1EB; border-radius: 12px; padding: 10px; display: flex; flex-direction: column; gap: 2px">
+              <span style="font-size: 20px; font-weight: 700; color: #0B4A3B">1,902</span>
+              <span style="font-size: 12px; color: #0B4A3B">صورة رُبطت</span>
+            </div>
+            <div style="background: #FBE9E5; border-radius: 12px; padding: 10px; display: flex; flex-direction: column; gap: 2px">
+              <span style="font-size: 20px; font-weight: 700; color: #8A2A14">3</span>
+              <span style="font-size: 12px; color: #8A2A14">بدون باركود مطابق</span>
+            </div>
+            <div style="background: #FDF1DE; border-radius: 12px; padding: 10px; display: flex; flex-direction: column; gap: 2px">
+              <span style="font-size: 20px; font-weight: 700; color: #8A3B0A">140</span>
+              <span style="font-size: 12px; color: #8A3B0A">صنف بلا صورة</span>
+            </div>
+          </div>
+          <div style="display: flex; flex-direction: column; border: 1px solid #F1D3CB; border-radius: 12px; overflow: hidden; font-size: 13px">
+            <div style="padding: 8px 12px; border-bottom: 1px solid #F1D3CB; display: flex; justify-content: space-between; gap: 8px"><span dir="ltr">IMG_2231.jpg</span><span style="color: #5B6661">الاسم ليس باركودًا</span></div>
+            <div style="padding: 8px 12px; border-bottom: 1px solid #F1D3CB; display: flex; justify-content: space-between; gap: 8px"><span dir="ltr">6221000000065 (1).jpg</span><span style="color: #5B6661">صيغة الاسم غير صحيحة</span></div>
+            <div style="padding: 8px 12px; display: flex; justify-content: space-between; gap: 8px"><span dir="ltr">6221000009999.png</span><span style="color: #5B6661">لا يوجد صنف بهذا الباركود</span></div>
+          </div>
+          <button type="button" style="height: 44px; border-radius: 12px; border: 1px solid #C9D1CC; background: #FFFFFF; color: #17201C; font-size: 14px; font-weight: 600; cursor: pointer">عرض الأصناف التي بلا صورة</button>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{iDone}}" hint-placeholder-val="{{ false }}">
+        <div style="display: flex; gap: 10px; align-items: center; background: #E3F1EB; color: #0B4A3B; border-radius: 14px; padding: 14px; font-size: 15px; font-weight: 600">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex-shrink: 0"><path d="M5 12.5l4.5 4.5L19 7.5"></path></svg>
+          <span>تم حفظ 1,902 صورة وربطها بأصنافها.</span>
+        </div>
+      </sc-if>
+    </sc-if>
+  </div>
+
+  <sc-if value="{{showAction}}" hint-placeholder-val="{{ true }}">
+    <div style="padding: 10px 16px 16px; background: #FFFFFF; border-top: 1px solid #E3E7E4; flex-shrink: 0; display: flex; flex-direction: column; gap: 6px">
+      <button type="button" onClick="{{confirm}}" style="height: 54px; border: 0; border-radius: 14px; background: {{accent}}; color: #FFFFFF; font-size: 17px; font-weight: 700; cursor: pointer">{{actionLabel}}</button>
+      <button type="button" onClick="{{reset}}" style="height: 40px; border: 0; background: transparent; color: #5B6661; font-size: 14px; font-weight: 600; cursor: pointer">إلغاء واختيار ملف آخر</button>
+    </div>
+  </sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"accent":{"editor":"color","default":"#0E6B57","options":["#0E6B57","#1F4E8C","#9A3412","#3F3D9E"]},"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { tab: 'excel', x: 'checked', img: 'idle', updatePrices: true };
+  }
+  renderVals() {
+    const accent = this.props.accent ?? '#0E6B57';
+    const isExcel = this.state.tab === 'excel';
+    const x = this.state.x;
+    const img = this.state.img;
+    const count = this.state.updatePrices ? '1,935' : '1,840';
+    const showAction = isExcel ? x === 'checked' : img === 'matched';
+    return {
+      accent: accent,
+      isExcel: isExcel,
+      isImages: !isExcel,
+      xBg: isExcel ? '#FFFFFF' : 'transparent',
+      xFg: isExcel ? accent : '#5B6661',
+      iBg: isExcel ? 'transparent' : '#FFFFFF',
+      iFg: isExcel ? '#5B6661' : accent,
+      xIdle: x === 'idle',
+      xFile: x !== 'idle',
+      xChecked: x === 'checked',
+      xDone: x === 'done',
+      iIdle: img === 'idle',
+      iMatched: img === 'matched',
+      iDone: img === 'done',
+      updatePrices: this.state.updatePrices,
+      importCount: count,
+      showAction: showAction,
+      actionLabel: isExcel ? 'استيراد ' + count + ' صنف' : 'حفظ الصور المربوطة',
+      toggleUpdate: () => this.setState({ updatePrices: !this.state.updatePrices }),
+      showExcel: () => this.setState({ tab: 'excel' }),
+      showImages: () => this.setState({ tab: 'images' }),
+      uploadExcel: () => this.setState({ x: 'checked' }),
+      uploadImages: () => this.setState({ img: 'matched' }),
+      confirm: () => {
+        if (isExcel) this.setState({ x: 'done' });
+        else this.setState({ img: 'done' });
+      },
+      reset: () => {
+        if (isExcel) this.setState({ x: 'idle' });
+        else this.setState({ img: 'idle' });
+      }
+    };
+  }
+}
+</script>
+</body>
+</html>

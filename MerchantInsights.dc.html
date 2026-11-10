@@ -1,0 +1,180 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<title>ملخصي</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#0E6B57}a:hover{color:#0A4F40}
+button{font-family:inherit}
+</style>
+</helmet>
+<div dir="rtl" style="width: 390px; height: 844px; box-sizing: border-box; background: #F5F7F6; font-family: 'IBM Plex Sans Arabic', system-ui, sans-serif; color: #17201C; display: flex; flex-direction: column; overflow: hidden">
+  <header style="background: #FFFFFF; padding: 20px 16px 14px; display: flex; align-items: center; justify-content: space-between; gap: 12px; border-bottom: 1px solid #E3E7E4; flex-shrink: 0">
+    <div style="display: flex; flex-direction: column; gap: 2px">
+      <h1 style="margin: 0; font-size: 22px; font-weight: 700">ملخصي</h1>
+      <span style="font-size: 13px; color: #5B6661">[اسم المحل] · نوفمبر 2026</span>
+    </div>
+    <span style="font-size: 11px; font-weight: 600; padding: 3px 8px; border-radius: 8px; background: #EEF1EF; color: #3D4843">أرقام توضيحية</span>
+  </header>
+
+  <div style="flex: 1; overflow-y: auto; padding: 14px 16px 16px; display: flex; flex-direction: column; gap: 12px">
+    <div style="background: {{accent}}; color: #FFFFFF; border-radius: 18px; padding: 16px; display: flex; flex-direction: column; gap: 4px">
+      <span style="font-size: 14px; font-weight: 500">مشترياتك هذا الشهر</span>
+      <span style="font-size: 28px; font-weight: 700">18,450 ج.م</span>
+      <span style="font-size: 13px">أعلى بـ 12% من الشهر الماضي · 6 طلبات · متوسط الطلب 3,075 ج.م</span>
+    </div>
+
+    <div style="background: #FFFFFF; border: 1px solid #E3E7E4; border-radius: 16px; padding: 14px; display: flex; flex-direction: column; gap: 10px">
+      <span style="font-size: 15px; font-weight: 700">مشترياتك آخر 6 شهور</span>
+      <div role="img" aria-label="مشتريات آخر 6 شهور، أعلاها نوفمبر 18,450 جنيه" style="display: flex; align-items: flex-end; gap: 10px; height: 120px; padding-top: 6px">
+        <sc-for list="{{months}}" as="m" hint-placeholder-count="6">
+          <div style="flex: 1; display: flex; flex-direction: column; align-items: center; gap: 4px; height: 100%; justify-content: flex-end">
+            <span style="font-size: 11px; color: #3D4843; font-weight: 600">{{m.short}}</span>
+            <div style="width: 100%; border-radius: 6px 6px 2px 2px; background: {{m.bg}}; height: {{m.h}}px"></div>
+          </div>
+        </sc-for>
+      </div>
+      <div style="display: flex; gap: 10px">
+        <sc-for list="{{months}}" as="m" hint-placeholder-count="6">
+          <span style="flex: 1; text-align: center; font-size: 11px; color: #5B6661">{{m.label}}</span>
+        </sc-for>
+      </div>
+    </div>
+
+    <div style="background: #FFFFFF; border: 1px solid #E3E7E4; border-radius: 16px; padding: 14px; display: flex; flex-direction: column; gap: 10px">
+      <div style="display: flex; align-items: center; gap: 8px">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#8A3B0A" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="13" r="8"></circle><path d="M12 9v4l2.5 2"></path><path d="M9 2h6"></path></svg>
+        <span style="font-size: 15px; font-weight: 700">حان وقت إعادة الطلب</span>
+      </div>
+      <span style="font-size: 13px; color: #5B6661">أصناف تطلبها بانتظام ومرّ عليها وقت أطول من المعتاد.</span>
+      <sc-for list="{{reorder}}" as="r" hint-placeholder-count="3">
+        <div style="display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 8px 0; border-top: 1px solid #EEF1EF">
+          <span style="display: flex; flex-direction: column; gap: 1px; min-width: 0">
+            <span style="font-size: 14px; font-weight: 600">{{r.name}}</span>
+            <span style="font-size: 12px; color: #5B6661">{{r.why}}</span>
+          </span>
+          <span style="flex-shrink: 0; font-size: 13px; font-weight: 700; background: #F5F7F6; border-radius: 8px; padding: 4px 8px">{{r.qty}}</span>
+        </div>
+      </sc-for>
+      <sc-if value="{{notAdded}}" hint-placeholder-val="{{ true }}">
+        <button type="button" onClick="{{addAll}}" style="height: 48px; border: 0; border-radius: 12px; background: {{accent}}; color: #FFFFFF; font-size: 15px; font-weight: 700; cursor: pointer">أضف الكل للسلة</button>
+      </sc-if>
+      <sc-if value="{{added}}" hint-placeholder-val="{{ false }}">
+        <a href="Cart.dc.html" style="height: 48px; border-radius: 12px; background: #E3F1EB; color: #0B4A3B; font-size: 15px; font-weight: 700; text-decoration: none; display: flex; align-items: center; justify-content: center">أُضيفت للسلة — عرض السلة</a>
+      </sc-if>
+    </div>
+
+    <div style="background: #FFFFFF; border: 1px solid #E3E7E4; border-radius: 16px; padding: 14px; display: flex; flex-direction: column; gap: 10px">
+      <span style="font-size: 15px; font-weight: 700">تغيّرت أسعارها</span>
+      <span style="font-size: 13px; color: #5B6661">من الأصناف التي تشتريها، خلال آخر 7 أيام.</span>
+      <sc-for list="{{prices}}" as="p" hint-placeholder-count="2">
+        <div style="display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 8px 0; border-top: 1px solid #EEF1EF">
+          <span style="display: flex; flex-direction: column; gap: 1px">
+            <span style="font-size: 14px; font-weight: 600">{{p.name}}</span>
+            <span style="font-size: 12px; color: #5B6661">{{p.unit}}</span>
+          </span>
+          <span style="font-size: 13px; font-weight: 700; padding: 4px 10px; border-radius: 10px; background: {{p.bg}}; color: {{p.fg}}">{{p.change}}</span>
+        </div>
+      </sc-for>
+    </div>
+
+    <div style="background: #FFFFFF; border: 1px solid #E3E7E4; border-radius: 16px; padding: 14px; display: flex; flex-direction: column; gap: 10px">
+      <span style="font-size: 15px; font-weight: 700">أكثر أصنافك طلبًا</span>
+      <sc-for list="{{top}}" as="t" hint-placeholder-count="4">
+        <div style="display: flex; flex-direction: column; gap: 4px">
+          <div style="display: flex; justify-content: space-between; font-size: 13px">
+            <span style="font-weight: 600">{{t.name}}</span>
+            <span style="color: #3D4843">{{t.qty}}</span>
+          </div>
+          <div style="height: 8px; border-radius: 4px; background: #EEF1EF; overflow: hidden">
+            <div style="height: 8px; border-radius: 4px; background: {{t.accent}}; width: {{t.pct}}%"></div>
+          </div>
+        </div>
+      </sc-for>
+    </div>
+
+    <div style="background: #FFFFFF; border: 1px solid #E3E7E4; border-radius: 16px; padding: 14px; display: flex; flex-direction: column; gap: 10px">
+      <span style="font-size: 15px; font-weight: 700">تطلبها محلات مشابهة لمحلك</span>
+      <sc-for list="{{similar}}" as="s" hint-placeholder-count="2">
+        <div style="display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 6px 0; border-top: 1px solid #EEF1EF">
+          <span style="display: flex; flex-direction: column; gap: 1px">
+            <span style="font-size: 14px; font-weight: 600">{{s.name}}</span>
+            <span style="font-size: 12px; color: #5B6661">{{s.why}}</span>
+          </span>
+          <a href="Catalog.dc.html" style="flex-shrink: 0; min-height: 44px; padding: 0 14px; border-radius: 12px; border: 1px solid {{s.accent}}; color: {{s.accent}}; text-decoration: none; display: flex; align-items: center; font-size: 14px; font-weight: 700; box-sizing: border-box">عرض</a>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+
+  <nav style="display: flex; background: #FFFFFF; border-top: 1px solid #E3E7E4; padding: 6px 8px 10px; flex-shrink: 0">
+    <a href="Catalog.dc.html" style="flex: 1; min-height: 52px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; text-decoration: none; color: #5B6661; font-size: 12px; font-weight: 500">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="4" width="7" height="7" rx="1.5"></rect><rect x="13" y="4" width="7" height="7" rx="1.5"></rect><rect x="4" y="13" width="7" height="7" rx="1.5"></rect><rect x="13" y="13" width="7" height="7" rx="1.5"></rect></svg>
+      <span>الأصناف</span>
+    </a>
+    <a href="MyOrders.dc.html" style="flex: 1; min-height: 52px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; text-decoration: none; color: #5B6661; font-size: 12px; font-weight: 500">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="3" width="14" height="18" rx="2"></rect><path d="M9 8h6"></path><path d="M9 12h6"></path><path d="M9 16h4"></path></svg>
+      <span>طلباتي</span>
+    </a>
+    <a href="MerchantInsights.dc.html" style="flex: 1; min-height: 52px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; text-decoration: none; color: {{accent}}; font-size: 12px; font-weight: 700">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20V10"></path><path d="M10 20V4"></path><path d="M16 20v-7"></path><path d="M22 20H2"></path></svg>
+      <span>ملخصي</span>
+    </a>
+    <a href="#" style="flex: 1; min-height: 52px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; text-decoration: none; color: #5B6661; font-size: 12px; font-weight: 500">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"></circle><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"></path></svg>
+      <span>حسابي</span>
+    </a>
+  </nav>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"accent":{"editor":"color","default":"#0E6B57","options":["#0E6B57","#1F4E8C","#9A3412","#3F3D9E"]},"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { added: false };
+  }
+  renderVals() {
+    const accent = this.props.accent ?? '#0E6B57';
+    const raw = [['يونيو', 14200], ['يوليو', 16800], ['أغسطس', 15100], ['سبتمبر', 17300], ['أكتوبر', 16470], ['نوفمبر', 18450]];
+    const max = Math.max.apply(null, raw.map((m) => m[1]));
+    const months = raw.map((m, i) => ({
+      label: m[0],
+      short: (m[1] / 1000).toFixed(1) + 'k',
+      h: Math.round((m[1] / max) * 88),
+      bg: i === raw.length - 1 ? accent : '#B9D3C9'
+    }));
+    const topRaw = [['[اسم الصنف 1]', 42, 'كرتونة'], ['[اسم الصنف 5]', 30, 'دستة'], ['[اسم الصنف 3]', 24, 'شدّة'], ['[اسم الصنف 2]', 18, 'كرتونة']];
+    const top = topRaw.map((t) => ({ name: t[0], qty: t[1] + ' ' + t[2] + ' في 3 شهور', pct: Math.round((t[1] / topRaw[0][1]) * 100), accent: accent }));
+    return {
+      accent: accent,
+      months: months,
+      top: top,
+      reorder: [
+        { name: '[اسم الصنف 1]', why: 'تطلبه كل 10 أيام تقريبًا · آخر مرة منذ 13 يومًا', qty: '2 كرتونة' },
+        { name: '[اسم الصنف 3]', why: 'تطلبه كل أسبوعين · آخر مرة منذ 17 يومًا', qty: '6 شدّة' },
+        { name: '[اسم الصنف 5]', why: 'تطلبه كل 3 أسابيع · آخر مرة منذ 24 يومًا', qty: '3 دستة' }
+      ],
+      prices: [
+        { name: '[اسم الصنف 3]', unit: 'لكل شدّة', change: 'انخفض 5%', bg: '#E3F1EB', fg: '#0B4A3B' },
+        { name: '[اسم الصنف 2]', unit: 'لكل كرتونة', change: 'ارتفع 3%', bg: '#FDF1DE', fg: '#8A3B0A' }
+      ],
+      similar: [
+        { name: '[اسم الصنف 7]', why: 'يطلبه 8 من كل 10 محلات في منطقتك', accent: accent },
+        { name: '[اسم الصنف 9]', why: 'صنف جديد، طلبته 23 محلًا هذا الشهر', accent: accent }
+      ],
+      added: this.state.added,
+      notAdded: !this.state.added,
+      addAll: () => this.setState({ added: true })
+    };
+  }
+}
+</script>
+</body>
+</html>

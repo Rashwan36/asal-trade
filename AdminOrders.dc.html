@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<title>الإدارة — الطلبات</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#0E6B57}a:hover{color:#0A4F40}
+button{font-family:inherit}
+</style>
+</helmet>
+<div dir="rtl" style="width: 390px; height: 844px; box-sizing: border-box; background: #F5F7F6; font-family: 'IBM Plex Sans Arabic', system-ui, sans-serif; color: #17201C; display: flex; flex-direction: column; overflow: hidden">
+  <header style="background: #FFFFFF; padding: 20px 16px 12px; display: flex; flex-direction: column; gap: 12px; border-bottom: 1px solid #E3E7E4; flex-shrink: 0">
+    <div style="display: flex; align-items: center; justify-content: space-between; gap: 12px">
+      <h1 style="margin: 0; font-size: 22px; font-weight: 700">الطلبات</h1>
+      <a href="AdminComplaints.dc.html" style="height: 40px; padding: 0 12px; border-radius: 12px; border: 1px solid #F1D3CB; background: #FBE9E5; color: #8A2A14; display: flex; align-items: center; gap: 6px; font-size: 14px; font-weight: 700; text-decoration: none; box-sizing: border-box">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12z"></path><path d="M12 8v4"></path><path d="M12 15.5h.01"></path></svg>
+        <span>الشكاوى (2)</span>
+      </a>
+    </div>
+    <a href="AdminOrderDetail.dc.html" style="display: flex; align-items: center; gap: 12px; background: #E3F1EB; border-radius: 14px; padding: 12px 14px; text-decoration: none; color: #0B3D31">
+      <span style="width: 40px; height: 40px; flex-shrink: 0; border-radius: 12px; background: {{accent}}; display: flex; align-items: center; justify-content: center">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9a6 6 0 0 1 12 0c0 6 2.5 7.5 2.5 7.5h-17S6 15 6 9"></path><path d="M10 20a2 2 0 0 0 4 0"></path></svg>
+      </span>
+      <span style="flex: 1; display: flex; flex-direction: column; gap: 1px">
+        <span style="font-size: 15px; font-weight: 700">طلب جديد <span dir="ltr">#1049</span></span>
+        <span style="font-size: 13px">من [اسم المحل 6] · منذ دقيقتين</span>
+      </span>
+      <span style="font-size: 14px; font-weight: 700">عرض</span>
+    </a>
+    <div style="display: flex; gap: 8px; overflow-x: auto">
+      <sc-for list="{{tabs}}" as="t" hint-placeholder-count="4">
+        <button type="button" onClick="{{t.pick}}" style="flex-shrink: 0; height: 44px; padding: 0 14px; border-radius: 22px; font-size: 14px; font-weight: 600; cursor: pointer; border: 1px solid {{t.border}}; background: {{t.bg}}; color: {{t.fg}}; display: flex; align-items: center; gap: 6px">
+          <span>{{t.label}}</span>
+          <span style="min-width: 22px; height: 22px; padding: 0 6px; box-sizing: border-box; border-radius: 11px; font-size: 12px; font-weight: 700; display: flex; align-items: center; justify-content: center; background: {{t.countBg}}; color: {{t.countFg}}">{{t.count}}</span>
+        </button>
+      </sc-for>
+    </div>
+  </header>
+
+  <div style="flex: 1; overflow-y: auto; padding: 14px 16px 16px; display: flex; flex-direction: column; gap: 10px">
+    <sc-for list="{{orders}}" as="o" hint-placeholder-count="3">
+      <a href="AdminOrderDetail.dc.html" style="background: #FFFFFF; border: 1px solid #E3E7E4; border-radius: 16px; padding: 14px; display: flex; flex-direction: column; gap: 8px; text-decoration: none; color: #17201C">
+        <span style="display: flex; justify-content: space-between; align-items: flex-start; gap: 8px">
+          <span style="display: flex; flex-direction: column; gap: 2px; min-width: 0">
+            <span style="font-size: 15px; font-weight: 700">{{o.shop}}</span>
+            <span style="font-size: 13px; color: #5B6661"><span dir="ltr">{{o.no}}</span> · {{o.time}}</span>
+          </span>
+          <span style="flex-shrink: 0; font-size: 13px; font-weight: 600; padding: 5px 12px; border-radius: 14px; background: {{o.pillBg}}; color: {{o.pillFg}}">{{o.status}}</span>
+        </span>
+        <span style="display: flex; justify-content: space-between; gap: 8px; font-size: 13px; color: #5B6661">
+          <span>المندوب: {{o.rep}}</span>
+          <span>{{o.lines}} أصناف · [الإجمالي] ج.م</span>
+        </span>
+      </a>
+    </sc-for>
+    <sc-if value="{{empty}}" hint-placeholder-val="{{ false }}">
+      <div style="text-align: center; padding: 40px 16px; font-size: 15px; color: #5B6661">لا توجد طلبات في هذه الحالة.</div>
+    </sc-if>
+  </div>
+
+  <nav style="display: flex; background: #FFFFFF; border-top: 1px solid #E3E7E4; padding: 6px 2px 10px; flex-shrink: 0">
+    <a href="AdminDashboard.dc.html" style="flex: 1; min-height: 52px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; text-decoration: none; color: #5B6661; font-size: 12px; font-weight: 500">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20V10"></path><path d="M10 20V4"></path><path d="M16 20v-7"></path><path d="M22 20H2"></path></svg>
+      <span>الرئيسية</span>
+    </a>
+    <a href="AdminOrders.dc.html" style="flex: 1; min-height: 52px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; text-decoration: none; color: {{accent}}; font-size: 12px; font-weight: 700">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="3" width="14" height="18" rx="2"></rect><path d="M9 8h6"></path><path d="M9 12h6"></path><path d="M9 16h4"></path></svg>
+      <span>الطلبات</span>
+    </a>
+    <a href="AdminProducts.dc.html" style="flex: 1; min-height: 52px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; text-decoration: none; color: #5B6661; font-size: 12px; font-weight: 500">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 8l-9-5-9 5v8l9 5 9-5V8z"></path><path d="M3 8l9 5 9-5"></path><path d="M12 13v8"></path></svg>
+      <span>الأصناف</span>
+    </a>
+    <a href="AdminMerchants.dc.html" style="flex: 1; min-height: 52px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; text-decoration: none; color: #5B6661; font-size: 12px; font-weight: 500">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 10l1.5-5h13L20 10"></path><path d="M4 10h16v10H4z"></path><path d="M10 20v-5h4v5"></path></svg>
+      <span>التجار</span>
+    </a>
+    <a href="AdminReps.dc.html" style="flex: 1; min-height: 52px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; text-decoration: none; color: #5B6661; font-size: 12px; font-weight: 500">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="8" r="3.5"></circle><path d="M2.5 20c1-3.5 3.5-5.5 6.5-5.5s5.5 2 6.5 5.5"></path><path d="M16 4.5a3.5 3.5 0 0 1 0 7"></path><path d="M18 14.8c1.8.8 3 2.6 3.5 5.2"></path></svg>
+      <span>المندوبين</span>
+    </a>
+    <a href="AdminStaff.dc.html" style="flex: 1; min-height: 52px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; text-decoration: none; color: #5B6661; font-size: 12px; font-weight: 500">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l8 3v6c0 4.5-3.4 8-8 9-4.6-1-8-4.5-8-9V6l8-3z"></path><path d="M9 12l2 2 4-4"></path></svg>
+      <span>الحسابات</span>
+    </a>
+  </nav>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"accent":{"editor":"color","default":"#0E6B57","options":["#0E6B57","#1F4E8C","#9A3412","#3F3D9E"]},"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { tab: 'new' };
+  }
+  renderVals() {
+    const accent = this.props.accent ?? '#0E6B57';
+    const statuses = {
+      new: { label: 'جديد', bg: '#E3F1EB', fg: '#0B5A47' },
+      preparing: { label: 'قيد التجهيز', bg: '#FDF1DE', fg: '#8A3B0A' },
+      out: { label: 'جاري التوصيل', bg: '#E6EEFB', fg: '#1E4FA8' },
+      delivered: { label: 'تم التسليم', bg: '#EEF1EF', fg: '#3D4843' }
+    };
+    const all = [
+      { no: '#1049', shop: '[اسم المحل 6]', rep: '[اسم المندوب 2]', time: 'منذ دقيقتين', lines: 5, st: 'new' },
+      { no: '#1048', shop: '[اسم المحل 1]', rep: '[اسم المندوب 1]', time: 'منذ 25 دقيقة', lines: 3, st: 'new' },
+      { no: '#1045', shop: '[اسم المحل 2]', rep: '[اسم المندوب 1]', time: 'أمس', lines: 4, st: 'preparing' },
+      { no: '#1041', shop: '[اسم المحل 3]', rep: '[اسم المندوب 1]', time: '7 نوفمبر', lines: 3, st: 'out' },
+      { no: '#1039', shop: '[اسم المحل 1]', rep: '[اسم المندوب 1]', time: '3 نوفمبر', lines: 4, st: 'delivered' }
+    ];
+    const defs = [['new', 'جديدة'], ['preparing', 'قيد التجهيز'], ['out', 'جاري التوصيل'], ['delivered', 'تم التسليم']];
+    const tab = this.state.tab;
+    const tabs = defs.map((d) => {
+      const on = d[0] === tab;
+      return {
+        label: d[1],
+        count: all.filter((o) => o.st === d[0]).length,
+        bg: on ? accent : '#FFFFFF',
+        fg: on ? '#FFFFFF' : '#17201C',
+        border: on ? accent : '#C9D1CC',
+        countBg: on ? '#FFFFFF' : '#EEF1EF',
+        countFg: on ? accent : '#3D4843',
+        pick: () => this.setState({ tab: d[0] })
+      };
+    });
+    const orders = all.filter((o) => o.st === tab).map((o) => {
+      const s = statuses[o.st];
+      return { no: o.no, shop: o.shop, rep: o.rep, time: o.time, lines: o.lines, status: s.label, pillBg: s.bg, pillFg: s.fg };
+    });
+    return { accent: accent, tabs: tabs, orders: orders, empty: orders.length === 0 };
+  }
+}
+</script>
+</body>
+</html>

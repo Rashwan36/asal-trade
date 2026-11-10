@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<title>راجع طلبك</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#0E6B57}a:hover{color:#0A4F40}
+button{font-family:inherit}
+</style>
+</helmet>
+<div dir="rtl" style="width: 390px; height: 844px; box-sizing: border-box; background: #F5F7F6; font-family: 'IBM Plex Sans Arabic', system-ui, sans-serif; color: #17201C; display: flex; flex-direction: column; overflow: hidden">
+  <header style="background: #FFFFFF; padding: 14px 12px; display: flex; align-items: center; gap: 8px; border-bottom: 1px solid #E3E7E4; flex-shrink: 0">
+    <a href="AIOrder.dc.html" aria-label="رجوع لتعديل الطلب" style="width: 44px; height: 44px; border-radius: 12px; display: flex; align-items: center; justify-content: center; color: #17201C; text-decoration: none">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"></path></svg>
+    </a>
+    <h1 style="margin: 0; font-size: 19px; font-weight: 700; flex: 1">راجع طلبك</h1>
+  </header>
+
+  <div style="flex: 1; overflow-y: auto; padding: 14px 16px 16px; display: flex; flex-direction: column; gap: 10px">
+    <div style="display: flex; gap: 10px; align-items: center; background: #E3F1EB; color: #0B4A3B; border-radius: 14px; padding: 12px 14px; font-size: 14px; font-weight: 600; line-height: 1.6">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex-shrink: 0"><path d="M12 3l1.8 4.7L18.5 9.5l-4.7 1.8L12 16l-1.8-4.7L5.5 9.5l4.7-1.8z"></path></svg>
+      <span>{{summary}}</span>
+    </div>
+
+    <button type="button" onClick="{{toggleOriginal}}" aria-expanded="{{showOriginal}}" style="display: flex; align-items: center; justify-content: space-between; min-height: 44px; padding: 0 4px; border: 0; background: transparent; color: #3D4843; font-size: 14px; font-weight: 600; cursor: pointer">
+      <span>طلبك كما كتبته</span>
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="transform: rotate({{origRot}}deg)"><path d="M6 9l6 6 6-6"></path></svg>
+    </button>
+    <sc-if value="{{showOriginal}}" hint-placeholder-val="{{ false }}">
+      <div style="background: #EEF1EF; border-radius: 12px; padding: 12px 14px; font-size: 14px; line-height: 1.8; color: #3D4843; white-space: pre-line">عايز 3 كرتونة [صنف 1]
+ودستتين [صنف 5]
+و6 شدة [صنف 3]
+و[صنف 2] 2 كرتونة
+و4 [صنف غير موجود]</div>
+    </sc-if>
+
+    <sc-for list="{{ready}}" as="it" hint-placeholder-count="3">
+      <div style="background: #FFFFFF; border: 1px solid #E3E7E4; border-radius: 14px; padding: 12px; display: flex; gap: 10px; align-items: center">
+        <span style="width: 26px; height: 26px; flex-shrink: 0; border-radius: 13px; background: #E3F1EB; display: flex; align-items: center; justify-content: center">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#0B5A47" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"></path></svg>
+        </span>
+        <span style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px">
+          <span style="font-size: 15px; font-weight: 600">{{it.name}}</span>
+          <span style="font-size: 12px; color: #5B6661">{{it.price}} · من «{{it.source}}»</span>
+        </span>
+        <div style="display: flex; align-items: center; border: 1px solid #C9D1CC; border-radius: 12px; flex-shrink: 0">
+          <button type="button" aria-label="زيادة الكمية" onClick="{{it.inc}}" style="width: 40px; height: 44px; border: 0; background: transparent; color: #17201C; cursor: pointer; display: flex; align-items: center; justify-content: center">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14"></path><path d="M5 12h14"></path></svg>
+          </button>
+          <span style="min-width: 40px; display: flex; flex-direction: column; align-items: center; line-height: 1.2">
+            <span style="font-size: 15px; font-weight: 700">{{it.qty}}</span>
+            <span style="font-size: 11px; color: #5B6661">{{it.unit}}</span>
+          </span>
+          <button type="button" aria-label="تقليل الكمية" onClick="{{it.dec}}" style="width: 40px; height: 44px; border: 0; background: transparent; color: #17201C; cursor: pointer; display: flex; align-items: center; justify-content: center">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M5 12h14"></path></svg>
+          </button>
+        </div>
+      </div>
+    </sc-for>
+
+    <sc-if value="{{needsChoice}}" hint-placeholder-val="{{ true }}">
+      <div style="background: #FFFFFF; border: 2px solid #E8C79A; border-radius: 14px; padding: 12px; display: flex; flex-direction: column; gap: 10px">
+        <div style="display: flex; gap: 8px; align-items: center">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#8A3B0A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M9.5 9.5a2.5 2.5 0 1 1 3.5 2.3c-.6.3-1 .9-1 1.5v.7"></path><path d="M12 17h.01"></path></svg>
+          <span style="font-size: 14px; font-weight: 700; color: #6B2E08">أي صنف تقصد بـ«[صنف 2] 2 كرتونة»؟</span>
+        </div>
+        <sc-for list="{{choices}}" as="c" hint-placeholder-count="2">
+          <button type="button" onClick="{{c.pick}}" style="min-height: 48px; border-radius: 12px; border: 1px solid #C9D1CC; background: #FFFFFF; color: #17201C; cursor: pointer; display: flex; align-items: center; justify-content: space-between; padding: 0 14px; font-size: 14px; font-weight: 600; text-align: right">
+            <span>{{c.name}}</span>
+            <span style="font-size: 12px; color: #5B6661; font-weight: 500">{{c.note}}</span>
+          </button>
+        </sc-for>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{showMissing}}" hint-placeholder-val="{{ true }}">
+      <div style="background: #FFFFFF; border: 2px solid #F1D3CB; border-radius: 14px; padding: 12px; display: flex; flex-direction: column; gap: 10px">
+        <div style="display: flex; gap: 8px; align-items: center">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#8A2A14" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="M20 20l-3.5-3.5"></path><path d="M8.5 8.5l5 5"></path><path d="M13.5 8.5l-5 5"></path></svg>
+          <span style="font-size: 14px; font-weight: 700; color: #8A2A14">لم نجد «[صنف غير موجود]» في الأصناف</span>
+        </div>
+        <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px">
+          <a href="Catalog.dc.html" style="min-height: 44px; border-radius: 12px; border: 1px solid #C9D1CC; color: #17201C; text-decoration: none; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 600; box-sizing: border-box">ابحث بنفسك</a>
+          <button type="button" onClick="{{dropMissing}}" style="min-height: 44px; border-radius: 12px; border: 1px solid #C9D1CC; background: #FFFFFF; color: #A1361B; font-size: 14px; font-weight: 600; cursor: pointer">تجاهله</button>
+        </div>
+      </div>
+    </sc-if>
+  </div>
+
+  <div style="padding: 10px 16px 16px; background: #FFFFFF; border-top: 1px solid #E3E7E4; flex-shrink: 0; display: flex; flex-direction: column; gap: 6px">
+    <sc-if value="{{needsChoice}}" hint-placeholder-val="{{ true }}">
+      <span style="font-size: 13px; color: #8A3B0A; text-align: center; font-weight: 600">اختر الصنف المقصود أولًا</span>
+    </sc-if>
+    <sc-if value="{{canAdd}}" hint-placeholder-val="{{ false }}">
+      <a href="Cart.dc.html" style="height: 54px; border-radius: 14px; background: {{accent}}; color: #FFFFFF; text-decoration: none; display: flex; align-items: center; justify-content: center; font-size: 17px; font-weight: 700">أضف {{readyCount}} أصناف للسلة</a>
+    </sc-if>
+    <sc-if value="{{needsChoice}}" hint-placeholder-val="{{ true }}">
+      <span style="height: 54px; border-radius: 14px; background: #E3E7E4; color: #5B6661; display: flex; align-items: center; justify-content: center; font-size: 17px; font-weight: 700">أضف {{readyCount}} أصناف للسلة</span>
+    </sc-if>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"accent":{"editor":"color","default":"#0E6B57","options":["#0E6B57","#1F4E8C","#9A3412","#3F3D9E"]},"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = {
+      qty: { a: 3, b: 2, c: 6, d: 2 },
+      choice: null,
+      missing: true,
+      showOriginal: false
+    };
+  }
+  setQty(k, d) {
+    const q = Object.assign({}, this.state.qty);
+    q[k] = Math.max(1, q[k] + d);
+    this.setState({ qty: q });
+  }
+  renderVals() {
+    const accent = this.props.accent ?? '#0E6B57';
+    const base = [
+      { k: 'a', name: '[اسم الصنف 1]', unit: 'كرتونة', price: '[السعر] ج.م لكل كرتونة', source: '3 كرتونة [صنف 1]' },
+      { k: 'b', name: '[اسم الصنف 5]', unit: 'دستة', price: '[السعر] ج.م لكل دستة', source: 'دستتين [صنف 5]' },
+      { k: 'c', name: '[اسم الصنف 3]', unit: 'شدّة', price: '[السعر] ج.م لكل شدّة', source: '6 شدة [صنف 3]' }
+    ];
+    const options = [
+      { id: 'd1', name: '[اسم الصنف 2] — حجم 1 لتر', note: 'طلبته 4 مرات' },
+      { id: 'd2', name: '[اسم الصنف 2] — حجم 2 لتر', note: 'لم تطلبه من قبل' }
+    ];
+    const list = base.slice();
+    const choice = this.state.choice;
+    if (choice) {
+      const o = options.find((x) => x.id === choice);
+      list.push({ k: 'd', name: o.name, unit: 'كرتونة', price: '[السعر] ج.م لكل كرتونة', source: '[صنف 2] 2 كرتونة' });
+    }
+    const ready = list.map((it) => ({
+      name: it.name,
+      unit: it.unit,
+      price: it.price,
+      source: it.source,
+      qty: this.state.qty[it.k],
+      inc: () => this.setQty(it.k, 1),
+      dec: () => this.setQty(it.k, -1)
+    }));
+    const needsChoice = !choice;
+    const total = 5;
+    const missingCount = this.state.missing ? 1 : 0;
+    let summary = 'فهمنا ' + total + ' أصناف: ' + ready.length + ' جاهزة';
+    if (needsChoice) summary += '، وصنف يحتاج اختيارك';
+    if (missingCount) summary += '، وصنف غير موجود';
+    summary += '. راجع الكميات قبل الإضافة.';
+    return {
+      accent: accent,
+      ready: ready,
+      readyCount: ready.length,
+      needsChoice: needsChoice,
+      canAdd: !needsChoice,
+      showMissing: this.state.missing,
+      summary: summary,
+      showOriginal: this.state.showOriginal,
+      origRot: this.state.showOriginal ? 180 : 0,
+      toggleOriginal: () => this.setState({ showOriginal: !this.state.showOriginal }),
+      dropMissing: () => this.setState({ missing: false }),
+      choices: options.map((o) => ({ name: o.name, note: o.note, pick: () => this.setState({ choice: o.id }) }))
+    };
+  }
+}
+</script>
+</body>
+</html>

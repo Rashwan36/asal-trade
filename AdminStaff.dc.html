@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<title>الإدارة — الحسابات والصلاحيات</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#0E6B57}a:hover{color:#0A4F40}
+button,input{font-family:inherit}
+</style>
+</helmet>
+<div dir="rtl" style="width: 390px; height: 844px; box-sizing: border-box; background: #F5F7F6; font-family: 'IBM Plex Sans Arabic', system-ui, sans-serif; color: #17201C; display: flex; flex-direction: column; overflow: hidden">
+  <header style="background: #FFFFFF; padding: 20px 16px 14px; display: flex; flex-direction: column; gap: 10px; border-bottom: 1px solid #E3E7E4; flex-shrink: 0">
+    <div style="display: flex; align-items: center; justify-content: space-between; gap: 12px">
+      <h1 style="margin: 0; font-size: 22px; font-weight: 700">الحسابات</h1>
+      <button type="button" style="height: 44px; padding: 0 14px; border-radius: 12px; border: 0; background: {{accent}}; color: #FFFFFF; display: flex; align-items: center; gap: 6px; font-size: 14px; font-weight: 700; cursor: pointer">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14"></path><path d="M5 12h14"></path></svg>
+        <span>إضافة حساب</span>
+      </button>
+    </div>
+    <p style="margin: 0; font-size: 13px; line-height: 1.6; color: #5B6661">حسابات الموظفين والمندوبين تُنشأ من هنا فقط، ويستلم كل شخص رقمه وكلمة مرور مؤقتة. التاجر وحده يسجّل نفسه من التطبيق.</p>
+  </header>
+
+  <div style="flex: 1; overflow-y: auto; padding: 14px 16px 16px; display: flex; flex-direction: column; gap: 10px">
+    <sc-for list="{{users}}" as="u" hint-placeholder-count="4">
+      <div style="background: #FFFFFF; border: 1px solid {{u.border}}; border-radius: 16px; display: flex; flex-direction: column">
+        <button type="button" onClick="{{u.toggle}}" aria-expanded="{{u.open}}" style="width: 100%; border: 0; background: transparent; padding: 14px; text-align: right; cursor: pointer; color: #17201C; display: flex; align-items: center; gap: 12px">
+          <span style="width: 40px; height: 40px; flex-shrink: 0; border-radius: 20px; background: #EEF1EF; display: flex; align-items: center; justify-content: center; font-size: 15px; font-weight: 700; color: #3D4843">{{u.initial}}</span>
+          <span style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px">
+            <span style="font-size: 15px; font-weight: 700">{{u.name}}</span>
+            <span style="font-size: 13px; color: #5B6661" dir="ltr">{{u.phone}}</span>
+          </span>
+          <span style="flex-shrink: 0; font-size: 12px; font-weight: 700; padding: 4px 10px; border-radius: 12px; background: {{u.roleBg}}; color: {{u.roleFg}}">{{u.role}}</span>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#5B6661" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex-shrink: 0; transform: rotate({{u.rot}}deg)"><path d="M6 9l6 6 6-6"></path></svg>
+        </button>
+        <sc-if value="{{u.open}}" hint-placeholder-val="{{ false }}">
+          <div style="padding: 0 14px 14px; display: flex; flex-direction: column; gap: 4px">
+            <span style="font-size: 13px; font-weight: 700; color: #3D4843; margin-bottom: 4px">الصلاحيات</span>
+            <sc-for list="{{u.perms}}" as="p" hint-placeholder-count="4">
+              <label style="display: flex; align-items: center; gap: 12px; min-height: 44px; cursor: pointer; font-size: 14px; color: {{p.color}}">
+                <input type="checkbox" checked="{{p.on}}" disabled="{{p.locked}}" onChange="{{p.toggle}}" style="width: 20px; height: 20px; margin: 0; flex-shrink: 0; accent-color: {{p.accent}}">
+                <span>{{p.label}}</span>
+              </label>
+            </sc-for>
+            <sc-if value="{{u.isOwner}}" hint-placeholder-val="{{ false }}">
+              <span style="font-size: 12px; color: #5B6661">حساب المدير له كل الصلاحيات ولا يمكن تقييده.</span>
+            </sc-if>
+            <sc-if value="{{u.canReset}}" hint-placeholder-val="{{ true }}">
+              <div style="display: flex; gap: 8px; margin-top: 6px">
+                <button type="button" style="flex: 1; height: 44px; border-radius: 12px; border: 1px solid #C9D1CC; background: #FFFFFF; color: #17201C; font-size: 14px; font-weight: 600; cursor: pointer">كلمة مرور جديدة</button>
+                <button type="button" style="flex: 1; height: 44px; border-radius: 12px; border: 1px solid #C9D1CC; background: #FFFFFF; color: #A1361B; font-size: 14px; font-weight: 600; cursor: pointer">إيقاف الحساب</button>
+              </div>
+            </sc-if>
+          </div>
+        </sc-if>
+      </div>
+    </sc-for>
+  </div>
+
+  <nav style="display: flex; background: #FFFFFF; border-top: 1px solid #E3E7E4; padding: 6px 2px 10px; flex-shrink: 0">
+    <a href="AdminDashboard.dc.html" style="flex: 1; min-height: 52px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; text-decoration: none; color: #5B6661; font-size: 12px; font-weight: 500">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20V10"></path><path d="M10 20V4"></path><path d="M16 20v-7"></path><path d="M22 20H2"></path></svg>
+      <span>الرئيسية</span>
+    </a>
+    <a href="AdminOrders.dc.html" style="flex: 1; min-height: 52px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; text-decoration: none; color: #5B6661; font-size: 12px; font-weight: 500">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="3" width="14" height="18" rx="2"></rect><path d="M9 8h6"></path><path d="M9 12h6"></path><path d="M9 16h4"></path></svg>
+      <span>الطلبات</span>
+    </a>
+    <a href="AdminProducts.dc.html" style="flex: 1; min-height: 52px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; text-decoration: none; color: #5B6661; font-size: 12px; font-weight: 500">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 8l-9-5-9 5v8l9 5 9-5V8z"></path><path d="M3 8l9 5 9-5"></path><path d="M12 13v8"></path></svg>
+      <span>الأصناف</span>
+    </a>
+    <a href="AdminMerchants.dc.html" style="flex: 1; min-height: 52px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; text-decoration: none; color: #5B6661; font-size: 12px; font-weight: 500">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 10l1.5-5h13L20 10"></path><path d="M4 10h16v10H4z"></path><path d="M10 20v-5h4v5"></path></svg>
+      <span>التجار</span>
+    </a>
+    <a href="AdminReps.dc.html" style="flex: 1; min-height: 52px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; text-decoration: none; color: #5B6661; font-size: 12px; font-weight: 500">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="8" r="3.5"></circle><path d="M2.5 20c1-3.5 3.5-5.5 6.5-5.5s5.5 2 6.5 5.5"></path><path d="M16 4.5a3.5 3.5 0 0 1 0 7"></path><path d="M18 14.8c1.8.8 3 2.6 3.5 5.2"></path></svg>
+      <span>المندوبين</span>
+    </a>
+    <a href="AdminStaff.dc.html" style="flex: 1; min-height: 52px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; text-decoration: none; color: {{accent}}; font-size: 12px; font-weight: 700">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l8 3v6c0 4.5-3.4 8-8 9-4.6-1-8-4.5-8-9V6l8-3z"></path><path d="M9 12l2 2 4-4"></path></svg>
+      <span>الحسابات</span>
+    </a>
+  </nav>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"accent":{"editor":"color","default":"#0E6B57","options":["#0E6B57","#1F4E8C","#9A3412","#3F3D9E"]},"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = {
+      open: 'u2',
+      perms: {
+        u1: { orders: true, products: true, merchants: true, reps: true },
+        u2: { orders: true, products: false, merchants: false, reps: false },
+        u3: { orders: true, products: true, merchants: true, reps: false },
+        u4: { orders: false, products: false, merchants: false, reps: false }
+      }
+    };
+  }
+  renderVals() {
+    const accent = this.props.accent ?? '#0E6B57';
+    const roles = {
+      owner: { label: 'مدير', bg: '#E3F1EB', fg: '#0B5A47' },
+      staff: { label: 'موظف', bg: '#E6EEFB', fg: '#1E4FA8' },
+      rep: { label: 'مندوب', bg: '#FDF1DE', fg: '#8A3B0A' }
+    };
+    const permDefs = [
+      ['orders', 'استلام الطلبات وتجهيزها'],
+      ['products', 'تعديل الأصناف والأسعار'],
+      ['merchants', 'تفعيل التجار الجدد'],
+      ['reps', 'المندوبون والعمولات']
+    ];
+    const list = [
+      { id: 'u1', name: '[اسم المدير]', phone: '01XXXXXXXXX', role: 'owner' },
+      { id: 'u2', name: '[اسم الموظف 1]', phone: '01XXXXXXXXX', role: 'staff' },
+      { id: 'u3', name: '[اسم الموظف 2]', phone: '01XXXXXXXXX', role: 'staff' },
+      { id: 'u4', name: '[اسم المندوب 1]', phone: '01XXXXXXXXX', role: 'rep' }
+    ];
+    const users = list.map((u) => {
+      const r = roles[u.role];
+      const open = this.state.open === u.id;
+      const isOwner = u.role === 'owner';
+      const isRep = u.role === 'rep';
+      const perms = isRep
+        ? [{ label: 'يرى عملاءه وطلباتهم وعمولته فقط', on: true, locked: true, color: '#5B6661', accent: accent, toggle: () => {} }]
+        : permDefs.map((d) => {
+            const on = isOwner ? true : !!this.state.perms[u.id][d[0]];
+            return {
+              label: d[1],
+              on: on,
+              locked: isOwner,
+              color: isOwner ? '#5B6661' : '#17201C',
+              accent: accent,
+              toggle: () => {
+                if (isOwner) return;
+                const all = Object.assign({}, this.state.perms);
+                const mine = Object.assign({}, all[u.id]);
+                mine[d[0]] = !mine[d[0]];
+                all[u.id] = mine;
+                this.setState({ perms: all });
+              }
+            };
+          });
+      return {
+        name: u.name,
+        phone: u.phone,
+        initial: u.name.charAt(1),
+        role: r.label,
+        roleBg: r.bg,
+        roleFg: r.fg,
+        open: open,
+        rot: open ? 180 : 0,
+        border: open ? accent : '#E3E7E4',
+        perms: perms,
+        isOwner: isOwner,
+        canReset: !isOwner,
+        toggle: () => this.setState({ open: open ? null : u.id })
+      };
+    });
+    return { accent: accent, users: users };
+  }
+}
+</script>
+</body>
+</html>
