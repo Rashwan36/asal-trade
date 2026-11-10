@@ -42,9 +42,62 @@ button{font-family:inherit}
         </button>
       </sc-for>
     </div>
+    <sc-if value="{{isReady}}" hint-placeholder-val="{{ false }}">
+      <div style="display: flex; flex-direction: column; gap: 6px">
+        <span style="font-size: 13px; font-weight: 600; color: #3D4843">الحي</span>
+        <div style="display: flex; gap: 8px; overflow-x: auto">
+          <sc-for list="{{districts}}" as="d" hint-placeholder-count="4">
+            <button type="button" onClick="{{d.pick}}" aria-pressed="{{d.on}}" style="flex-shrink: 0; height: 44px; padding: 0 14px; border-radius: 22px; font-size: 14px; font-weight: 600; cursor: pointer; border: 1px solid {{d.border}}; background: {{d.bg}}; color: {{d.fg}}; display: flex; align-items: center; gap: 6px">
+              <span>{{d.label}}</span>
+              <span style="font-size: 12px; font-weight: 700; opacity: 0.85">{{d.count}}</span>
+            </button>
+          </sc-for>
+        </div>
+      </div>
+    </sc-if>
   </header>
 
   <div style="flex: 1; overflow-y: auto; padding: 14px 16px 16px; display: flex; flex-direction: column; gap: 10px">
+    <sc-if value="{{hasMsg}}" hint-placeholder-val="{{ false }}">
+      <div style="display: flex; gap: 8px; align-items: center; border-radius: 12px; padding: 10px 12px; font-size: 14px; font-weight: 600; background: #E3F1EB; color: #0B4A3B">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex-shrink: 0"><path d="M5 12.5l4.5 4.5L19 7.5"></path></svg>
+        <span>{{msg}}</span>
+      </div>
+    </sc-if>
+    <sc-if value="{{isReady}}" hint-placeholder-val="{{ false }}">
+      <div style="display: flex; align-items: center; justify-content: space-between; gap: 8px">
+        <span style="font-size: 13px; color: #5B6661">اختر الطلبات التي تخرج معًا في مشوار واحد.</span>
+        <button type="button" onClick="{{toggleAll}}" style="flex-shrink: 0; min-height: 44px; padding: 0 8px; border: 0; background: transparent; color: {{accent}}; font-size: 14px; font-weight: 700; cursor: pointer">{{allLabel}}</button>
+      </div>
+    </sc-if>
+    <sc-for list="{{readyOrders}}" as="r" hint-placeholder-count="3">
+      <div style="background: #FFFFFF; border: 2px solid {{r.border}}; border-radius: 16px; display: flex; align-items: stretch">
+        <label style="flex: 1; min-width: 0; display: flex; align-items: center; gap: 12px; padding: 12px 14px; cursor: pointer">
+          <input type="checkbox" aria-label="اختيار طلب {{r.no}}" checked="{{r.on}}" onChange="{{r.toggle}}" style="width: 22px; height: 22px; flex-shrink: 0; margin: 0; accent-color: {{accent}}">
+          <span style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 3px">
+            <span style="font-size: 15px; font-weight: 700">{{r.shop}}</span>
+            <span style="font-size: 13px; color: #5B6661"><span dir="ltr">{{r.no}}</span> · {{r.lines}} أصناف · [الإجمالي] ج.م</span>
+            <span style="display: flex; align-items: center; gap: 4px; font-size: 13px; font-weight: 600; color: #4A2C8A">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-6.5-5.6-6.5-11a6.5 6.5 0 0 1 13 0c0 5.4-6.5 11-6.5 11z"></path><circle cx="12" cy="10" r="2.3"></circle></svg>
+              {{r.district}}
+            </span>
+          </span>
+        </label>
+        <a href="AdminOrderDetail.dc.html" aria-label="فتح الطلب {{r.no}}" style="width: 52px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; color: #5B6661; text-decoration: none; border-right: 1px solid #EEF1EF">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 6l-6 6 6 6"></path></svg>
+        </a>
+      </div>
+    </sc-for>
+    <sc-if value="{{isOut}}" hint-placeholder-val="{{ false }}">
+      <a href="AdminTrip.dc.html" style="display: flex; align-items: center; gap: 12px; background: #E6EEFB; border-radius: 14px; padding: 12px 14px; text-decoration: none; color: #143A78">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex-shrink: 0"><path d="M3 16V7h11v9"></path><path d="M14 10h4l3 3v3h-7"></path><circle cx="7" cy="17.5" r="1.8"></circle><circle cx="17" cy="17.5" r="1.8"></circle></svg>
+        <span style="flex: 1; display: flex; flex-direction: column; gap: 1px">
+          <span style="font-size: 15px; font-weight: 700">مشوار [اسم السائق 1] · 3 طلبات</span>
+          <span style="font-size: 13px">سجّل نتيجة كل طلب وأقفل المشوار</span>
+        </span>
+        <span style="font-size: 14px; font-weight: 700">إقفال</span>
+      </a>
+    </sc-if>
     <sc-for list="{{orders}}" as="o" hint-placeholder-count="3">
       <a href="AdminOrderDetail.dc.html" style="background: #FFFFFF; border: 1px solid #E3E7E4; border-radius: 16px; padding: 14px; display: flex; flex-direction: column; gap: 8px; text-decoration: none; color: #17201C">
         <span style="display: flex; justify-content: space-between; align-items: flex-start; gap: 8px">
@@ -58,12 +111,29 @@ button{font-family:inherit}
           <span>المندوب: {{o.rep}}</span>
           <span>{{o.lines}} أصناف · [الإجمالي] ج.م</span>
         </span>
+        <sc-if value="{{o.hasReason}}" hint-placeholder-val="{{ false }}">
+          <span style="font-size: 13px; font-weight: 700; color: #8A2A14">سبب عدم التسليم: {{o.reason}}</span>
+        </sc-if>
       </a>
     </sc-for>
     <sc-if value="{{empty}}" hint-placeholder-val="{{ false }}">
-      <div style="text-align: center; padding: 40px 16px; font-size: 15px; color: #5B6661">لا توجد طلبات في هذه الحالة.</div>
+      <div style="text-align: center; padding: 40px 16px; font-size: 15px; color: #5B6661">{{emptyText}}</div>
     </sc-if>
   </div>
+
+  <sc-if value="{{isReady}}" hint-placeholder-val="{{ false }}">
+    <div style="padding: 10px 16px 12px; background: #FFFFFF; border-top: 1px solid #E3E7E4; flex-shrink: 0; display: flex; flex-direction: column; gap: 8px">
+      <div style="display: flex; align-items: center; gap: 8px">
+        <label for="tripDriver" style="font-size: 14px; font-weight: 600; flex-shrink: 0">السائق <span style="font-weight: 400; color: #5B6661">(اختياري)</span></label>
+        <select id="tripDriver" style="flex: 1; min-width: 0; height: 44px; border: 1px solid #C9D1CC; border-radius: 12px; padding: 0 10px; font-size: 15px; background: #FFFFFF; color: #17201C; font-family: inherit">
+          <option value="">بدون تحديد</option>
+          <option value="d1">[اسم السائق 1]</option>
+          <option value="d2">[اسم السائق 2]</option>
+        </select>
+      </div>
+      <button type="button" onClick="{{sendTrip}}" disabled="{{noneSelected}}" style="height: 52px; border: 0; border-radius: 14px; font-size: 16px; font-weight: 700; cursor: pointer; background: {{tripBg}}; color: {{tripFg}}">{{tripLabel}}</button>
+    </div>
+  </sc-if>
 
   <nav style="display: flex; background: #FFFFFF; border-top: 1px solid #E3E7E4; padding: 6px 2px 10px; flex-shrink: 0">
     <a href="AdminDashboard.dc.html" style="flex: 1; min-height: 52px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; text-decoration: none; color: #5B6661; font-size: 12px; font-weight: 500">
@@ -97,25 +167,72 @@ button{font-family:inherit}
 class Component extends DCLogic {
   constructor(props) {
     super(props);
-    this.state = { tab: 'new' };
+    let tab = 'new';
+    let district = 'all';
+    try {
+      const q = window.location.search || '';
+      const t = /[?&]tab=(\w+)/.exec(q);
+      const d = /[?&]district=(\d+)/.exec(q);
+      if (t && ['new', 'preparing', 'ready', 'out', 'followup', 'delivered'].indexOf(t[1]) >= 0) tab = t[1];
+      if (d) district = d[1];
+      if (t && t[1] === 'followup') tab = 'followup';
+    } catch (e) {}
+    this.state = { tab: tab, district: district, picked: {}, sent: {}, msg: '' };
   }
   renderVals() {
     const accent = this.props.accent ?? '#0E6B57';
     const statuses = {
       new: { label: 'جديد', bg: '#E3F1EB', fg: '#0B5A47' },
       preparing: { label: 'قيد التجهيز', bg: '#FDF1DE', fg: '#8A3B0A' },
+      ready: { label: 'جاهز للتوصيل', bg: '#EDE7F6', fg: '#4A2C8A' },
       out: { label: 'جاري التوصيل', bg: '#E6EEFB', fg: '#1E4FA8' },
+      followup: { label: 'تحتاج متابعة', bg: '#FBE9E5', fg: '#8A2A14' },
       delivered: { label: 'تم التسليم', bg: '#EEF1EF', fg: '#3D4843' }
     };
-    const all = [
-      { no: '#1049', shop: '[اسم المحل 6]', rep: '[اسم المندوب 2]', time: 'منذ دقيقتين', lines: 5, st: 'new' },
-      { no: '#1048', shop: '[اسم المحل 1]', rep: '[اسم المندوب 1]', time: 'منذ 25 دقيقة', lines: 3, st: 'new' },
-      { no: '#1045', shop: '[اسم المحل 2]', rep: '[اسم المندوب 1]', time: 'أمس', lines: 4, st: 'preparing' },
-      { no: '#1041', shop: '[اسم المحل 3]', rep: '[اسم المندوب 1]', time: '7 نوفمبر', lines: 3, st: 'out' },
-      { no: '#1039', shop: '[اسم المحل 1]', rep: '[اسم المندوب 1]', time: '3 نوفمبر', lines: 4, st: 'delivered' }
+    const dnames = { '1': '[الحي 1]', '2': '[الحي 2]', '3': '[الحي 3]' };
+    const base = [
+      { no: '#1049', shop: '[اسم المحل 6]', rep: '[اسم المندوب 2]', time: 'منذ دقيقتين', lines: 5, st: 'new', d: '2' },
+      { no: '#1048', shop: '[اسم المحل 1]', rep: '[اسم المندوب 1]', time: 'منذ 25 دقيقة', lines: 3, st: 'new', d: '1' },
+      { no: '#1046', shop: '[اسم المحل 4]', rep: '[اسم المندوب 2]', time: 'أمس', lines: 6, st: 'ready', d: '1' },
+      { no: '#1045', shop: '[اسم المحل 2]', rep: '[اسم المندوب 1]', time: 'أمس', lines: 4, st: 'preparing', d: '1' },
+      { no: '#1044', shop: '[اسم المحل 5]', rep: '[اسم المندوب 1]', time: 'أمس', lines: 2, st: 'ready', d: '1' },
+      { no: '#1043', shop: '[اسم المحل 7]', rep: '[اسم المندوب 2]', time: 'أمس', lines: 5, st: 'ready', d: '2' },
+      { no: '#1042', shop: '[اسم المحل 8]', rep: '[اسم المندوب 1]', time: 'أمس', lines: 3, st: 'ready', d: '1' },
+      { no: '#1040', shop: '[اسم المحل 9]', rep: '[اسم المندوب 1]', time: '7 نوفمبر', lines: 4, st: 'ready', d: '3' },
+      { no: '#1047', shop: '[اسم المحل 10]', rep: '[اسم المندوب 2]', time: 'اليوم', lines: 4, st: 'out', d: '2' },
+      { no: '#1041', shop: '[اسم المحل 3]', rep: '[اسم المندوب 1]', time: '7 نوفمبر', lines: 3, st: 'out', d: '2' },
+      { no: '#1035', shop: '[اسم المحل 11]', rep: '[اسم المندوب 1]', time: '6 نوفمبر', lines: 2, st: 'out', d: '2' },
+      { no: '#1038', shop: '[اسم المحل 12]', rep: '[اسم المندوب 2]', time: '5 نوفمبر', lines: 3, st: 'followup', d: '3', reason: 'المحل مغلق' },
+      { no: '#1036', shop: '[اسم المحل 13]', rep: '[اسم المندوب 1]', time: '4 نوفمبر', lines: 5, st: 'followup', d: '1', reason: 'رفض الاستلام' },
+      { no: '#1039', shop: '[اسم المحل 1]', rep: '[اسم المندوب 1]', time: '3 نوفمبر', lines: 4, st: 'delivered', d: '1' }
     ];
-    const defs = [['new', 'جديدة'], ['preparing', 'قيد التجهيز'], ['out', 'جاري التوصيل'], ['delivered', 'تم التسليم']];
+    const all = base.map((o) => Object.assign({}, o, { st: this.state.sent[o.no] ? 'out' : o.st }));
+    const defs = [['new', 'جديدة'], ['preparing', 'قيد التجهيز'], ['ready', 'جاهز للتوصيل'], ['out', 'جاري التوصيل'], ['followup', 'تحتاج متابعة'], ['delivered', 'تم التسليم']];
     const tab = this.state.tab;
+    const isReady = tab === 'ready';
+    const readyAll = all.filter((o) => o.st === 'ready');
+    const dist = this.state.district;
+    const readyShown = readyAll.filter((o) => dist === 'all' || o.d === dist);
+    const selected = readyShown.filter((o) => this.state.picked[o.no]);
+    const allOn = readyShown.length > 0 && selected.length === readyShown.length;
+    const districts = [['all', 'الكل']].concat(Object.keys(dnames).map((k) => [k, dnames[k]])).map((d) => {
+      const on = d[0] === dist;
+      return {
+        label: d[1], on: on,
+        count: d[0] === 'all' ? readyAll.length : readyAll.filter((o) => o.d === d[0]).length,
+        bg: on ? accent : '#FFFFFF', fg: on ? '#FFFFFF' : '#17201C', border: on ? accent : '#C9D1CC',
+        pick: () => this.setState({ district: d[0] })
+      };
+    });
+    const readyOrders = isReady ? readyShown.map((o) => {
+      const on = !!this.state.picked[o.no];
+      return {
+        no: o.no, shop: o.shop, lines: o.lines, district: dnames[o.d], on: on,
+        border: on ? accent : '#E3E7E4',
+        toggle: () => { const p = Object.assign({}, this.state.picked); p[o.no] = !p[o.no]; this.setState({ picked: p, msg: '' }); }
+      };
+    }) : [];
+    const n = selected.length;
     const tabs = defs.map((d) => {
       const on = d[0] === tab;
       return {
@@ -126,14 +243,38 @@ class Component extends DCLogic {
         border: on ? accent : '#C9D1CC',
         countBg: on ? '#FFFFFF' : '#EEF1EF',
         countFg: on ? accent : '#3D4843',
-        pick: () => this.setState({ tab: d[0] })
+        pick: () => this.setState({ tab: d[0], msg: '' })
       };
     });
-    const orders = all.filter((o) => o.st === tab).map((o) => {
+    const orders = isReady ? [] : all.filter((o) => o.st === tab).map((o) => {
       const s = statuses[o.st];
-      return { no: o.no, shop: o.shop, rep: o.rep, time: o.time, lines: o.lines, status: s.label, pillBg: s.bg, pillFg: s.fg };
+      return { no: o.no, shop: o.shop, rep: o.rep, time: o.time, lines: o.lines, status: s.label, pillBg: s.bg, pillFg: s.fg, hasReason: !!o.reason, reason: o.reason || '' };
     });
-    return { accent: accent, tabs: tabs, orders: orders, empty: orders.length === 0 };
+    const listLen = isReady ? readyOrders.length : orders.length;
+    return {
+      accent: accent, tabs: tabs, orders: orders, readyOrders: readyOrders,
+      isReady: isReady, isOut: tab === 'out', districts: districts,
+      empty: listLen === 0,
+      emptyText: isReady ? 'لا توجد طلبات جاهزة في هذا الحي.' : 'لا توجد طلبات في هذه الحالة.',
+      hasMsg: !!this.state.msg, msg: this.state.msg,
+      allLabel: allOn ? 'إلغاء تحديد الكل' : (dist === 'all' ? 'تحديد الكل' : 'تحديد كل طلبات الحي'),
+      toggleAll: () => {
+        const p = Object.assign({}, this.state.picked);
+        readyShown.forEach((o) => { p[o.no] = !allOn; });
+        this.setState({ picked: p, msg: '' });
+      },
+      noneSelected: n === 0,
+      tripBg: n === 0 ? '#E3E7E4' : accent,
+      tripFg: n === 0 ? '#5B6661' : '#FFFFFF',
+      tripLabel: n === 0 ? 'اختر طلبات للإرسال' : 'إرسال ' + n + (n === 1 ? ' طلب' : ' طلبات') + ' للتوصيل',
+      sendTrip: () => {
+        if (n === 0) return;
+        const s = Object.assign({}, this.state.sent);
+        const p = Object.assign({}, this.state.picked);
+        selected.forEach((o) => { s[o.no] = true; delete p[o.no]; });
+        this.setState({ sent: s, picked: p, msg: 'تم إرسال ' + n + (n === 1 ? ' طلب' : ' طلبات') + ' للتوصيل، وأُرسل إشعار لكل تاجر.' });
+      }
+    };
   }
 }
 </script>

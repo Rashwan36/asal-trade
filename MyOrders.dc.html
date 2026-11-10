@@ -39,6 +39,12 @@ button{font-family:inherit}
         </button>
 
         <div style="padding: 0 14px 14px; display: flex; flex-direction: column; gap: 12px">
+          <sc-if value="{{o.adjusted}}" hint-placeholder-val="{{ false }}">
+            <div style="display: flex; gap: 8px; align-items: flex-start; background: #FDF1DE; color: #6B2E08; border-radius: 12px; padding: 10px 12px; font-size: 13px; line-height: 1.7">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex-shrink: 0; margin-top: 2px"><circle cx="12" cy="12" r="9"></circle><path d="M12 8v5"></path><path d="M12 16.5h.01"></path></svg>
+              <span><span style="font-weight: 700">تم تعديل طلبك:</span> {{o.adjustNote}} وتم تحديث الإجمالي.</span>
+            </div>
+          </sc-if>
           <div style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 4px">
             <sc-for list="{{o.segs}}" as="s" hint-placeholder-count="4">
               <div style="height: 6px; border-radius: 3px; background: {{s.bg}}"></div>
@@ -53,7 +59,12 @@ button{font-family:inherit}
                     <span style="font-size: 14px; font-weight: 600">{{it.name}}</span>
                     <span style="font-size: 12px; color: #5B6661">{{it.unit}} · [السعر] ج.م</span>
                   </span>
-                  <span style="font-size: 15px; font-weight: 700; flex-shrink: 0" dir="ltr">× {{it.qty}}</span>
+                  <span style="flex-shrink: 0; display: flex; flex-direction: column; align-items: flex-end; gap: 1px">
+                    <span style="font-size: 15px; font-weight: 700; color: {{it.qtyColor}}" dir="ltr">× {{it.got}}</span>
+                    <sc-if value="{{it.cut}}" hint-placeholder-val="{{ false }}">
+                      <span style="font-size: 12px; color: #5B6661">{{it.cutNote}}</span>
+                    </sc-if>
+                  </span>
                 </div>
               </sc-for>
               <div style="display: flex; justify-content: space-between; padding: 10px 0 8px; font-size: 14px">
@@ -70,7 +81,7 @@ button{font-family:inherit}
           <div style="display: flex; justify-content: space-between; align-items: center; gap: 8px">
             <span style="font-size: 15px; font-weight: 600">[الإجمالي] ج.م</span>
             <sc-if value="{{o.done}}" hint-placeholder-val="{{ false }}">
-              <a href="Cart.dc.html" style="min-height: 44px; padding: 0 16px; border-radius: 12px; border: 1px solid {{o.accent}}; color: {{o.accent}}; text-decoration: none; display: flex; align-items: center; gap: 6px; font-size: 14px; font-weight: 700; box-sizing: border-box">
+              <a href="ReorderPreview.dc.html" style="min-height: 44px; padding: 0 16px; border-radius: 12px; border: 1px solid {{o.accent}}; color: {{o.accent}}; text-decoration: none; display: flex; align-items: center; gap: 6px; font-size: 14px; font-weight: 700; box-sizing: border-box">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12a8 8 0 0 1 13.7-5.6L20 8.5"></path><path d="M20 4v4.5h-4.5"></path><path d="M20 12a8 8 0 0 1-13.7 5.6L4 15.5"></path><path d="M4 20v-4.5h4.5"></path></svg>
                 <span>إعادة الطلب</span>
               </a>
@@ -97,7 +108,7 @@ button{font-family:inherit}
       <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20V10"></path><path d="M10 20V4"></path><path d="M16 20v-7"></path><path d="M22 20H2"></path></svg>
       <span>ملخصي</span>
     </a>
-    <a href="#" style="flex: 1; min-height: 52px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; text-decoration: none; color: #5B6661; font-size: 12px; font-weight: 500">
+    <a href="Account.dc.html" style="flex: 1; min-height: 52px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; text-decoration: none; color: #5B6661; font-size: 12px; font-weight: 500">
       <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"></circle><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"></path></svg>
       <span>حسابي</span>
     </a>
@@ -108,7 +119,24 @@ button{font-family:inherit}
 class Component extends DCLogic {
   constructor(props) {
     super(props);
-    this.state = { tab: 'current', open: '#1048' };
+    let open = '#1048';
+    let tab = 'current';
+    try {
+      const m = /[?&]order=#?(\d+)/.exec(window.location.search || '');
+      if (m) {
+        open = '#' + m[1];
+        if (['#1039', '#1031'].indexOf(open) >= 0) tab = 'past';
+      }
+    } catch (e) {}
+    this.state = { tab: tab, open: open };
+  }
+  componentDidMount() {
+    try {
+      setTimeout(() => {
+        const el = document.querySelector('[aria-expanded="true"]');
+        if (el && el.scrollIntoView) el.scrollIntoView({ block: 'start' });
+      }, 150);
+    } catch (e) {}
   }
   renderVals() {
     const accent = this.props.accent ?? '#0E6B57';
@@ -119,15 +147,23 @@ class Component extends DCLogic {
       delivered: { label: 'تم التسليم', step: 4, bg: '#E3F1EB', fg: '#0B5A47' }
     };
     const units = ['كرتونة × 24', 'كرتونة × 12', 'شدّة × 6', 'كيس 10 كجم', 'كرتونة × 48', 'جالون × 4'];
-    const mk = (spec) => spec.map((pair) => ({
-      name: '[اسم الصنف ' + pair[0] + ']',
-      unit: units[(pair[0] - 1) % units.length],
-      qty: pair[1]
-    }));
+    const mk = (spec) => spec.map((pair) => {
+      const got = pair.length > 2 ? pair[2] : pair[1];
+      const cut = got < pair[1];
+      return {
+        name: '[اسم الصنف ' + pair[0] + ']',
+        unit: units[(pair[0] - 1) % units.length],
+        qty: pair[1],
+        got: got,
+        cut: cut,
+        qtyColor: cut ? '#A1361B' : '#17201C',
+        cutNote: got === 0 ? 'غير متوفر (المطلوب ' + pair[1] + ')' : 'المطلوب ' + pair[1]
+      };
+    });
     const current = [
       { no: '#1048', date: '9 نوفمبر', st: 'sent', items: mk([[1, 2], [3, 1], [5, 3]]) },
       { no: '#1045', date: '8 نوفمبر', st: 'preparing', items: mk([[2, 4], [4, 2], [6, 1], [1, 5]]) },
-      { no: '#1041', date: '7 نوفمبر', st: 'out', items: mk([[3, 2], [5, 1], [2, 6]]) }
+      { no: '#1041', date: '7 نوفمبر', st: 'out', items: mk([[3, 2, 1], [5, 1, 0], [2, 6]]) }
     ];
     const past = [
       { no: '#1039', date: '3 نوفمبر', st: 'delivered', items: mk([[1, 3], [2, 2], [4, 1], [6, 2]]) },
@@ -141,9 +177,11 @@ class Component extends DCLogic {
       return {
         no: o.no,
         date: o.date,
-        lines: o.items.length,
+        lines: o.items.filter((it) => it.got > 0).length,
         items: o.items,
-        units: o.items.reduce((t, it) => t + it.qty, 0),
+        units: o.items.reduce((t, it) => t + it.got, 0),
+        adjusted: o.items.some((it) => it.cut),
+        adjustNote: o.items.filter((it) => it.cut).map((it) => it.name + (it.got === 0 ? ' غير متوفر' : ': ' + it.got + ' من ' + it.qty)).join('، '),
         status: s.label,
         pillBg: s.bg,
         pillFg: s.fg,

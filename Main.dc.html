@@ -60,8 +60,25 @@ input,textarea,button{font-family:inherit}
           <input id="regPhone" type="tel" placeholder="01XXXXXXXXX" style="height: 48px; box-sizing: border-box; border: 1px solid #C9D1CC; border-radius: 12px; padding: 0 14px; font-size: 16px; background: #FFFFFF; color: #17201C">
         </div>
         <div style="display: flex; flex-direction: column; gap: 6px">
-          <label for="regAddress" style="font-size: 14px; font-weight: 600">عنوان المحل (المدينة والحي)</label>
-          <input id="regAddress" type="text" style="height: 48px; box-sizing: border-box; border: 1px solid #C9D1CC; border-radius: 12px; padding: 0 14px; font-size: 16px; background: #FFFFFF; color: #17201C">
+          <label for="regCity" style="font-size: 14px; font-weight: 600">المدينة</label>
+          <select id="regCity" style="height: 48px; border: 1px solid #C9D1CC; border-radius: 12px; padding: 0 12px; font-size: 16px; background: #FFFFFF; color: #17201C; font-family: inherit">
+            <option value="">اختر المدينة</option>
+            <option>[المدينة]</option>
+          </select>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 6px">
+          <label for="regDistrict" style="font-size: 14px; font-weight: 600">الحي</label>
+          <select id="regDistrict" aria-describedby="regDistrictHint" style="height: 48px; border: 1px solid #C9D1CC; border-radius: 12px; padding: 0 12px; font-size: 16px; background: #FFFFFF; color: #17201C; font-family: inherit">
+            <option value="">اختر الحي</option>
+            <option>[الحي 1]</option>
+            <option>[الحي 2]</option>
+            <option>[الحي 3]</option>
+          </select>
+          <span id="regDistrictHint" style="font-size: 13px; color: #5B6661">نستخدمه لتجميع طلبات الحي الواحد في توصيلة واحدة.</span>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 6px">
+          <label for="regAddress" style="font-size: 14px; font-weight: 600">العنوان بالتفصيل</label>
+          <input id="regAddress" type="text" placeholder="الشارع، رقم المبنى، علامة مميزة" style="height: 48px; box-sizing: border-box; border: 1px solid #C9D1CC; border-radius: 12px; padding: 0 14px; font-size: 16px; background: #FFFFFF; color: #17201C">
         </div>
         <div style="display: flex; flex-direction: column; gap: 6px">
           <label for="regCR" style="font-size: 14px; font-weight: 600">رقم السجل التجاري <span style="font-weight: 400; color: #5B6661">(اختياري)</span></label>

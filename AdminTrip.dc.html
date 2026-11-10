@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<title>الإدارة — إقفال مشوار السائق</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#0E6B57}a:hover{color:#0A4F40}
+button{font-family:inherit}
+</style>
+</helmet>
+<div dir="rtl" style="width: 390px; height: 844px; box-sizing: border-box; background: #F5F7F6; font-family: 'IBM Plex Sans Arabic', system-ui, sans-serif; color: #17201C; display: flex; flex-direction: column; overflow: hidden">
+  <header style="background: #FFFFFF; padding: 14px 12px; display: flex; align-items: center; gap: 8px; border-bottom: 1px solid #E3E7E4; flex-shrink: 0">
+    <a href="AdminOrders.dc.html?tab=out" aria-label="رجوع للطلبات" style="width: 44px; height: 44px; border-radius: 12px; display: flex; align-items: center; justify-content: center; color: #17201C; text-decoration: none">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"></path></svg>
+    </a>
+    <div style="flex: 1; display: flex; flex-direction: column; gap: 1px">
+      <h1 style="margin: 0; font-size: 19px; font-weight: 700">مشوار [اسم السائق 1]</h1>
+      <span style="font-size: 13px; color: #5B6661">خرج 11:30 ص · 3 طلبات · [الحي 2]</span>
+    </div>
+    <span style="font-size: 13px; font-weight: 600; padding: 5px 12px; border-radius: 14px; background: {{pillBg}}; color: {{pillFg}}">{{pill}}</span>
+  </header>
+
+  <div style="flex: 1; overflow-y: auto; padding: 14px 16px 16px; display: flex; flex-direction: column; gap: 12px">
+    <sc-if value="{{open}}" hint-placeholder-val="{{ true }}">
+      <span style="font-size: 13px; color: #5B6661; line-height: 1.7">سجّل نتيجة كل طلب كما أخبرك السائق، ثم أقفل المشوار. المبلغ المطلوب من السائق يُحسب من الطلبات المسلّمة فقط.</span>
+    </sc-if>
+
+    <sc-for list="{{orders}}" as="o" hint-placeholder-count="3">
+      <div style="background: #FFFFFF; border: 2px solid {{o.border}}; border-radius: 16px; padding: 14px; display: flex; flex-direction: column; gap: 10px">
+        <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 8px">
+          <span style="display: flex; flex-direction: column; gap: 2px; min-width: 0">
+            <span style="font-size: 15px; font-weight: 700">{{o.shop}}</span>
+            <span style="font-size: 13px; color: #5B6661"><span dir="ltr">{{o.no}}</span> · {{o.district}}</span>
+          </span>
+          <span style="flex-shrink: 0; font-size: 16px; font-weight: 700">{{o.amount}} ج.م</span>
+        </div>
+        <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px">
+          <button type="button" onClick="{{o.pickDelivered}}" aria-pressed="{{o.isDelivered}}" disabled="{{closed}}" style="min-height: 48px; border-radius: 12px; border: 2px solid {{o.dBorder}}; background: {{o.dBg}}; color: {{o.dFg}}; font-size: 14px; font-weight: 700; cursor: pointer">تم التسليم</button>
+          <button type="button" onClick="{{o.pickFailed}}" aria-pressed="{{o.isFailed}}" disabled="{{closed}}" style="min-height: 48px; border-radius: 12px; border: 2px solid {{o.fBorder}}; background: {{o.fBg}}; color: {{o.fFg}}; font-size: 14px; font-weight: 700; cursor: pointer">لم يُسلَّم</button>
+        </div>
+        <sc-if value="{{o.isFailed}}" hint-placeholder-val="{{ false }}">
+          <div style="display: flex; gap: 6px; flex-wrap: wrap">
+            <sc-for list="{{o.reasons}}" as="r" hint-placeholder-count="3">
+              <button type="button" onClick="{{r.pick}}" aria-pressed="{{r.on}}" disabled="{{closed}}" style="min-height: 44px; padding: 0 12px; border-radius: 22px; border: 1px solid {{r.border}}; background: {{r.bg}}; color: {{r.fg}}; font-size: 13px; font-weight: 600; cursor: pointer">{{r.label}}</button>
+            </sc-for>
+          </div>
+        </sc-if>
+      </div>
+    </sc-for>
+
+    <div style="background: #FFFFFF; border: 1px solid #E3E7E4; border-radius: 16px; padding: 14px; display: flex; flex-direction: column; gap: 8px; font-size: 14px">
+      <span style="font-size: 15px; font-weight: 700">حساب المشوار</span>
+      <div style="display: flex; justify-content: space-between"><span style="color: #5B6661">مسلَّمة</span><span style="font-weight: 600">{{nDelivered}} من 3</span></div>
+      <div style="display: flex; justify-content: space-between"><span style="color: #5B6661">لم تُسلَّم (تحتاج متابعة)</span><span style="font-weight: 600">{{nFailed}}</span></div>
+      <div style="height: 1px; background: #EEF1EF"></div>
+      <div style="display: flex; justify-content: space-between; align-items: baseline"><span style="font-weight: 700">المطلوب تحصيله من السائق</span><span style="font-size: 20px; font-weight: 700; color: {{accent}}">{{expected}} ج.م</span></div>
+      <span style="font-size: 12px; line-height: 1.7; color: #5B6661">الأرقام في هذا العرض تجريبية.</span>
+    </div>
+
+    <sc-if value="{{closed}}" hint-placeholder-val="{{ false }}">
+      <div style="display: flex; gap: 10px; align-items: flex-start; background: #E3F1EB; color: #0B4A3B; border-radius: 14px; padding: 14px; font-size: 14px; line-height: 1.7">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex-shrink: 0; margin-top: 2px"><path d="M5 12.5l4.5 4.5L19 7.5"></path></svg>
+        <span><span style="font-weight: 700">أُقفل المشوار.</span> أُضيفت عمولة المندوبين على الطلبات المسلّمة، ونُقلت الطلبات التي لم تُسلَّم إلى «تحتاج متابعة».</span>
+      </div>
+      <a href="AdminOrders.dc.html?tab=followup" style="min-height: 48px; border-radius: 12px; border: 1px solid #C9D1CC; color: #17201C; text-decoration: none; display: flex; align-items: center; justify-content: center; font-size: 15px; font-weight: 700; box-sizing: border-box">عرض الطلبات التي تحتاج متابعة</a>
+    </sc-if>
+  </div>
+
+  <sc-if value="{{open}}" hint-placeholder-val="{{ true }}">
+    <div style="padding: 10px 16px 16px; background: #FFFFFF; border-top: 1px solid #E3E7E4; flex-shrink: 0; display: flex; flex-direction: column; gap: 8px">
+      <label style="display: flex; align-items: center; gap: 10px; min-height: 44px; font-size: 14px; font-weight: 600; cursor: pointer">
+        <input type="checkbox" checked="{{received}}" onChange="{{toggleReceived}}" style="width: 22px; height: 22px; margin: 0; accent-color: {{accent}}">
+        <span>استلمت من السائق مبلغ {{expected}} ج.م</span>
+      </label>
+      <span style="font-size: 12px; color: #5B6661; text-align: center">{{hint}}</span>
+      <button type="button" onClick="{{closeTrip}}" disabled="{{blocked}}" style="height: 54px; border: 0; border-radius: 14px; font-size: 17px; font-weight: 700; cursor: pointer; background: {{btnBg}}; color: {{btnFg}}">إقفال المشوار</button>
+    </div>
+  </sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"accent":{"editor":"color","default":"#0E6B57","options":["#0E6B57","#1F4E8C","#9A3412","#3F3D9E"]},"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { result: {}, reason: {}, received: false, closed: false };
+  }
+  renderVals() {
+    const accent = this.props.accent ?? '#0E6B57';
+    const base = [
+      { no: '#1047', shop: '[اسم المحل 10]', district: '[الحي 2]', amount: 1850 },
+      { no: '#1041', shop: '[اسم المحل 3]', district: '[الحي 2]', amount: 2400 },
+      { no: '#1035', shop: '[اسم المحل 11]', district: '[الحي 2]', amount: 960 }
+    ];
+    const reasonDefs = [['closed', 'المحل مغلق'], ['refused', 'رفض الاستلام'], ['retry', 'إعادة المحاولة']];
+    const res = this.state.result;
+    const closed = this.state.closed;
+    const fmt = (n) => String(n).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    const orders = base.map((o) => {
+      const r = res[o.no];
+      const isDelivered = r === 'delivered';
+      const isFailed = r === 'failed';
+      const chosen = this.state.reason[o.no];
+      return {
+        no: o.no, shop: o.shop, district: o.district, amount: fmt(o.amount),
+        isDelivered: isDelivered, isFailed: isFailed,
+        border: isDelivered ? accent : (isFailed ? '#A1361B' : '#E3E7E4'),
+        dBorder: isDelivered ? accent : '#C9D1CC', dBg: isDelivered ? '#F1F8F5' : '#FFFFFF', dFg: isDelivered ? '#0B4A3B' : '#17201C',
+        fBorder: isFailed ? '#A1361B' : '#C9D1CC', fBg: isFailed ? '#FBE9E5' : '#FFFFFF', fFg: isFailed ? '#8A2A14' : '#17201C',
+        pickDelivered: () => { if (closed) return; const m = Object.assign({}, this.state.result); m[o.no] = 'delivered'; this.setState({ result: m, received: false }); },
+        pickFailed: () => { if (closed) return; const m = Object.assign({}, this.state.result); m[o.no] = 'failed'; const rs = Object.assign({}, this.state.reason); if (!rs[o.no]) rs[o.no] = 'closed'; this.setState({ result: m, reason: rs, received: false }); },
+        reasons: reasonDefs.map((d) => {
+          const on = chosen === d[0];
+          return { label: d[1], on: on, border: on ? '#A1361B' : '#C9D1CC', bg: on ? '#FBE9E5' : '#FFFFFF', fg: on ? '#8A2A14' : '#17201C',
+            pick: () => { if (closed) return; const rs = Object.assign({}, this.state.reason); rs[o.no] = d[0]; this.setState({ reason: rs }); } };
+        })
+      };
+    });
+    const nDelivered = base.filter((o) => res[o.no] === 'delivered').length;
+    const nFailed = base.filter((o) => res[o.no] === 'failed').length;
+    const pending = base.length - nDelivered - nFailed;
+    const expected = base.filter((o) => res[o.no] === 'delivered').reduce((t, o) => t + o.amount, 0);
+    const blocked = pending > 0 || !this.state.received;
+    return {
+      accent: accent,
+      orders: orders,
+      open: !closed,
+      closed: closed,
+      pill: closed ? 'مُقفل' : 'جاري التوصيل',
+      pillBg: closed ? '#EEF1EF' : '#E6EEFB',
+      pillFg: closed ? '#3D4843' : '#1E4FA8',
+      nDelivered: nDelivered,
+      nFailed: nFailed,
+      expected: fmt(expected),
+      received: this.state.received,
+      toggleReceived: () => this.setState({ received: !this.state.received }),
+      blocked: blocked,
+      hint: pending > 0 ? 'سجّل نتيجة ' + pending + (pending === 1 ? ' طلب' : ' طلبات') + ' قبل الإقفال' : (!this.state.received ? 'أكّد استلام المبلغ من السائق' : ''),
+      btnBg: blocked ? '#E3E7E4' : accent,
+      btnFg: blocked ? '#5B6661' : '#FFFFFF',
+      closeTrip: () => { if (!blocked) this.setState({ closed: true }); }
+    };
+  }
+}
+</script>
+</body>
+</html>

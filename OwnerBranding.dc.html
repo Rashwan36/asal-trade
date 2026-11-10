@@ -96,6 +96,54 @@ button,input,select{font-family:inherit}
       </div>
     </div>
 
+    <div style="background: #FFFFFF; border: 1px solid #E3E7E4; border-radius: 16px; padding: 14px; display: flex; flex-direction: column; gap: 12px">
+      <div style="display: flex; justify-content: space-between; align-items: center; gap: 8px">
+        <span style="font-size: 15px; font-weight: 700">الاشتراك</span>
+        <span style="font-size: 13px; font-weight: 700; padding: 4px 12px; border-radius: 14px; background: {{subBg}}; color: {{subFg}}">{{subLabel}}</span>
+      </div>
+      <span style="font-size: 13px; line-height: 1.7; color: #3D4843">{{subNote}}</span>
+      <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px">
+        <div style="display: flex; flex-direction: column; gap: 6px">
+          <label for="subEnd" style="font-size: 14px; font-weight: 600">تاريخ انتهاء الاشتراك</label>
+          <input id="subEnd" type="date" dir="ltr" value="{{subEnd}}" onChange="{{onSubEnd}}" style="height: 46px; box-sizing: border-box; border: 1px solid #C9D1CC; border-radius: 12px; padding: 0 8px; font-size: 15px; background: #FFFFFF; color: #17201C">
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 6px">
+          <label for="graceDays" style="font-size: 14px; font-weight: 600">مهلة السماح (أيام)</label>
+          <input id="graceDays" type="number" inputmode="numeric" min="0" dir="ltr" value="{{grace}}" onChange="{{onGrace}}" style="height: 46px; box-sizing: border-box; border: 1px solid #C9D1CC; border-radius: 12px; padding: 0 12px; font-size: 16px; background: #FFFFFF; color: #17201C; text-align: right">
+        </div>
+      </div>
+      <button type="button" onClick="{{toggleSuspend}}" aria-pressed="{{suspended}}" style="min-height: 48px; border-radius: 12px; border: 1px solid #A1361B; background: {{suspendBg}}; color: #8A2A14; font-size: 14px; font-weight: 700; cursor: pointer">{{suspendLabel}}</button>
+      <span style="font-size: 12px; line-height: 1.7; color: #5B6661">التاجر لا يرى تفاصيل الاشتراك. يرى فقط رسالة «الخدمة متوقفة مؤقتًا، تواصل مع الموزّع» عند الإيقاف.</span>
+    </div>
+
+    <div style="background: #FFFFFF; border: 1px solid #E3E7E4; border-radius: 16px; padding: 14px; display: flex; flex-direction: column">
+      <span style="font-size: 15px; font-weight: 700; margin-bottom: 4px">المميزات المفعّلة</span>
+      <sc-for list="{{features}}" as="f" hint-placeholder-count="5">
+        <div style="display: flex; align-items: center; justify-content: space-between; gap: 10px; min-height: 52px; border-top: 1px solid #EEF1EF">
+          <span style="display: flex; flex-direction: column; gap: 1px; min-width: 0">
+            <span style="font-size: 14px; font-weight: 600">{{f.name}}</span>
+            <span style="font-size: 12px; color: #5B6661">{{f.note}}</span>
+          </span>
+          <button type="button" onClick="{{f.toggle}}" aria-pressed="{{f.on}}" aria-label="{{f.name}}" style="width: 56px; height: 44px; flex-shrink: 0; border: 0; background: transparent; padding: 0; cursor: pointer; display: flex; align-items: center; justify-content: center">
+            <span style="position: relative; display: block; width: 44px; height: 26px; border-radius: 13px; background: {{f.trackBg}}">
+              <span style="position: absolute; top: 3px; left: {{f.knobLeft}}px; width: 20px; height: 20px; border-radius: 10px; background: #FFFFFF"></span>
+            </span>
+          </button>
+        </div>
+      </sc-for>
+    </div>
+
+    <div style="background: #FFFFFF; border: 1px solid #E3E7E4; border-radius: 16px; padding: 14px; display: flex; flex-direction: column; gap: 10px">
+      <span style="font-size: 15px; font-weight: 700">حدود الباقة</span>
+      <sc-for list="{{limits}}" as="l" hint-placeholder-count="3">
+        <div style="display: flex; align-items: center; justify-content: space-between; gap: 10px">
+          <label for="{{l.id}}" style="font-size: 14px; font-weight: 600">{{l.label}}</label>
+          <input id="{{l.id}}" type="number" inputmode="numeric" min="0" dir="ltr" placeholder="غير محدود" value="{{l.value}}" onChange="{{l.onChange}}" style="width: 120px; height: 44px; box-sizing: border-box; border: 1px solid #C9D1CC; border-radius: 12px; padding: 0 12px; font-size: 16px; background: #FFFFFF; color: #17201C; text-align: right">
+        </div>
+      </sc-for>
+      <span style="font-size: 12px; line-height: 1.7; color: #5B6661">الخانة الفارغة تعني غير محدود. عند بلوغ الحد يُمنع الإضافة وتظهر رسالة للمدير.</span>
+    </div>
+
     <div style="background: #FFFFFF; border: 1px solid #E3E7E4; border-radius: 16px; padding: 14px; display: flex; flex-direction: column; gap: 6px">
       <span style="font-size: 15px; font-weight: 700">يحتاج نسخة جديدة من التطبيق</span>
       <span style="font-size: 13px; line-height: 1.7; color: #3D4843">أيقونة التطبيق، واسمه على شاشة الموبايل، وشاشة البداية تُغيَّر من ملف إعدادات العميل في الكود ثم يُعاد رفع التطبيق على المتاجر. باقي الإعدادات هنا تتغير فورًا.</span>
@@ -111,7 +159,16 @@ button,input,select{font-family:inherit}
 class Component extends DCLogic {
   constructor(props) {
     super(props);
-    this.state = { color: '#0E6B57', name: 'عسل للتجارة والتوزيع', country: 'eg' };
+    this.state = {
+      color: '#0E6B57',
+      name: 'عسل للتجارة والتوزيع',
+      country: 'eg',
+      subEnd: new Date(Date.now() + 365 * 86400000).toISOString().slice(0, 10),
+      grace: 14,
+      suspendedManual: false,
+      features: { ai: true, barcode: true, offers: true, complaints: true, insights: true },
+      limits: { merchants: '', reps: '', ai: '' }
+    };
   }
   luminance(hex) {
     const m = /^#?([0-9a-f]{6})$/i.exec(hex || '');
@@ -138,7 +195,73 @@ class Component extends DCLogic {
     const L = this.luminance(color);
     const contrast = 1.05 / (L + 0.05);
     const name = this.state.name || '';
+    const st = this.state;
+    const grace = Number(st.grace) || 0;
+    let subBg = '#EEF1EF';
+    let subFg = '#3D4843';
+    let subLabel = 'غير محدد';
+    let subNote = 'حدّد تاريخ انتهاء الاشتراك.';
+    if (st.suspendedManual) {
+      subBg = '#FBE9E5'; subFg = '#8A2A14'; subLabel = 'موقوف';
+      subNote = 'أوقفته يدويًا. لا تُقبل طلبات جديدة، وتبقى القراءة والتصدير متاحين للإدارة.';
+    } else if (st.subEnd) {
+      const left = Math.ceil((new Date(st.subEnd + 'T23:59:59').getTime() - Date.now()) / 86400000);
+      if (!isNaN(left)) {
+        if (left > 30) {
+          subBg = '#E3F1EB'; subFg = '#0B5A47'; subLabel = 'فعّال';
+          subNote = 'بقي ' + left + ' يومًا على انتهاء الاشتراك.';
+        } else if (left >= 0) {
+          subBg = '#FDF1DE'; subFg = '#8A3B0A'; subLabel = 'يقترب من الانتهاء';
+          subNote = 'بقي ' + left + ' يومًا. يظهر تنبيه لمدير الموزّع في لوحته.';
+        } else if (-left <= grace) {
+          subBg = '#FDF1DE'; subFg = '#8A3B0A'; subLabel = 'مهلة سماح';
+          subNote = 'انتهى الاشتراك. بقي ' + (grace + left) + ' يومًا قبل إيقاف الطلبات الجديدة.';
+        } else {
+          subBg = '#FBE9E5'; subFg = '#8A2A14'; subLabel = 'موقوف';
+          subNote = 'انتهى الاشتراك وانتهت المهلة. لا تُقبل طلبات جديدة، وتبقى القراءة والتصدير متاحين للإدارة.';
+        }
+      }
+    }
+    const featDefs = [
+      ['ai', 'اطلب بسرعة (الذكاء الاصطناعي)', 'يُحسب استخدامه على كل طلب'],
+      ['barcode', 'مسح الباركود عند التجهيز', 'اختياري للموظفين'],
+      ['offers', 'العروض', 'خصومات وهدايا وسعر الكمية'],
+      ['complaints', 'الشكاوى', 'شكاوى التاجر على الطلبات'],
+      ['insights', 'ملخصي والتوصيات', 'لوحة التاجر وتوصيات الإدارة']
+    ];
+    const features = featDefs.map((d) => {
+      const on = !!st.features[d[0]];
+      return {
+        name: d[1], note: d[2], on: on,
+        trackBg: on ? color : '#7A857F',
+        knobLeft: on ? 21 : 3,
+        toggle: () => {
+          const f = Object.assign({}, this.state.features);
+          f[d[0]] = !f[d[0]];
+          this.setState({ features: f });
+        }
+      };
+    });
+    const limitDefs = [['merchants', 'أقصى عدد للتجار'], ['reps', 'أقصى عدد للمندوبين'], ['ai', 'حد الطلب الذكي شهريًا']];
+    const limits = limitDefs.map((d) => ({
+      id: 'limit-' + d[0], label: d[1], value: st.limits[d[0]],
+      onChange: (e) => {
+        const l = Object.assign({}, this.state.limits);
+        l[d[0]] = e && e.target ? e.target.value : '';
+        this.setState({ limits: l });
+      }
+    }));
     return {
+      subBg: subBg, subFg: subFg, subLabel: subLabel, subNote: subNote,
+      subEnd: st.subEnd, grace: grace,
+      suspended: st.suspendedManual,
+      suspendBg: st.suspendedManual ? '#FBE9E5' : '#FFFFFF',
+      suspendLabel: st.suspendedManual ? 'إلغاء الإيقاف اليدوي' : 'إيقاف الخدمة الآن',
+      onSubEnd: (e) => this.setState({ subEnd: e && e.target ? e.target.value : '' }),
+      onGrace: (e) => this.setState({ grace: e && e.target ? e.target.value : 0 }),
+      toggleSuspend: () => this.setState({ suspendedManual: !this.state.suspendedManual }),
+      features: features,
+      limits: limits,
       color: color,
       swatches: swatches,
       brandName: name,

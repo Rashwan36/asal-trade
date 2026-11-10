@@ -68,18 +68,29 @@ button,select{font-family:inherit}
       </sc-if>
       <div style="display: flex; flex-direction: column">
         <sc-for list="{{items}}" as="it" hint-placeholder-count="4">
-          <label style="display: flex; align-items: center; gap: 12px; min-height: 56px; padding: 6px 0; border-bottom: 1px solid #EEF1EF; cursor: pointer">
-            <input type="checkbox" checked="{{it.checked}}" onChange="{{it.toggle}}" style="width: 22px; height: 22px; flex-shrink: 0; accent-color: {{it.accent}}; margin: 0">
-            <span style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 1px">
+          <div style="display: flex; align-items: center; gap: 10px; min-height: 64px; padding: 6px 0; border-bottom: 1px solid #EEF1EF">
+            <input type="checkbox" aria-label="تجهيز {{it.name}}" checked="{{it.checked}}" onChange="{{it.toggle}}" style="width: 22px; height: 22px; flex-shrink: 0; accent-color: {{it.accent}}; margin: 0">
+            <span style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px">
               <span style="font-size: 15px; font-weight: 600; text-decoration: {{it.strike}}; color: {{it.nameColor}}">{{it.name}}</span>
               <span style="font-size: 12px; color: #5B6661">{{it.unitNote}} · باركود <span dir="ltr">{{it.barcode}}</span></span>
+              <sc-if value="{{it.changed}}" hint-placeholder-val="{{ false }}">
+                <span style="font-size: 12px; font-weight: 700; color: {{it.noteColor}}">{{it.changeNote}}</span>
+              </sc-if>
             </span>
-            <span style="flex-shrink: 0; display: flex; flex-direction: column; align-items: center; min-width: 52px; background: #F5F7F6; border-radius: 10px; padding: 4px 8px; line-height: 1.2">
-              <span style="font-size: 17px; font-weight: 700">{{it.qty}}</span>
-              <span style="font-size: 11px; color: #5B6661">{{it.unit}}</span>
+            <span style="flex-shrink: 0; display: flex; flex-direction: column; align-items: center; gap: 2px">
+              <input id="{{it.inputId}}" type="number" inputmode="numeric" min="0" max="{{it.qty}}" dir="ltr" aria-label="الكمية المتوفرة من {{it.name}}" value="{{it.avail}}" disabled="{{it.locked}}" onChange="{{it.setAvail}}" style="width: 60px; height: 44px; box-sizing: border-box; border: 2px solid {{it.border}}; border-radius: 10px; padding: 0 6px; font-size: 17px; font-weight: 700; text-align: center; background: #FFFFFF; color: #17201C">
+              <span style="font-size: 11px; color: #5B6661">من {{it.qty}} {{it.unit}}</span>
             </span>
-          </label>
+          </div>
         </sc-for>
+      </div>
+      <sc-if value="{{hasChanges}}" hint-placeholder-val="{{ false }}">
+        <div style="background: #FDF1DE; color: #6B2E08; border-radius: 12px; padding: 10px 12px; font-size: 13px; line-height: 1.7">
+          <span style="font-weight: 700">{{changeSummary}}</span><br>
+          {{notifyNote}}
+        </div>
+      </sc-if>
+      <div style="display: none">
       </div>
     </div>
 
@@ -96,18 +107,47 @@ button,select{font-family:inherit}
 
     <div style="background: #FFFFFF; border: 1px solid #E3E7E4; border-radius: 16px; padding: 14px; display: flex; flex-direction: column; gap: 10px">
       <span style="font-size: 15px; font-weight: 700">الفاتورة</span>
-      <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px">
-        <a href="PrintOrder.dc.html" style="min-height: 48px; border-radius: 12px; border: 1px solid #C9D1CC; color: #17201C; text-decoration: none; display: flex; align-items: center; justify-content: center; gap: 6px; font-size: 14px; font-weight: 600; box-sizing: border-box">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 9V3h10v6"></path><rect x="4" y="9" width="16" height="8" rx="1.5"></rect><path d="M7 14h10v7H7z"></path></svg>
-          <span>طباعة إذن الطلب</span>
+      <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px">
+        <a href="PrintOrder.dc.html" style="min-height: 64px; border-radius: 12px; border: 1px solid #C9D1CC; color: #17201C; text-decoration: none; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; font-size: 13px; font-weight: 600; box-sizing: border-box; text-align: center; padding: 6px 4px">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 9V3h10v6"></path><rect x="4" y="9" width="16" height="8" rx="1.5"></rect><path d="M7 14h10v7H7z"></path></svg>
+          <span>طباعة الإذن</span>
         </a>
-        <button type="button" style="min-height: 48px; border-radius: 12px; border: 1px solid #C9D1CC; background: #FFFFFF; color: #17201C; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px; font-size: 14px; font-weight: 600">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"></path><path d="M14 3v5h5"></path><path d="M12 11v6"></path><path d="M9 14l3 3 3-3"></path></svg>
+        <button type="button" style="min-height: 64px; border-radius: 12px; border: 1px solid #C9D1CC; background: #FFFFFF; color: #17201C; cursor: pointer; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; font-size: 13px; font-weight: 600; padding: 6px 4px">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"></path><path d="M14 3v5h5"></path><path d="M12 11v6"></path><path d="M9 14l3 3 3-3"></path></svg>
           <span>تصدير Excel</span>
         </button>
+        <a href="AdminOrders.dc.html?tab=ready&amp;district=1" style="min-height: 64px; border-radius: 12px; border: 1px solid {{accent}}; background: #F1F8F5; color: #0B4A3B; text-decoration: none; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; font-size: 13px; font-weight: 700; box-sizing: border-box; text-align: center; padding: 6px 4px">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-6.5-5.6-6.5-11a6.5 6.5 0 0 1 13 0c0 5.4-6.5 11-6.5 11z"></path><circle cx="12" cy="10" r="2.3"></circle></svg>
+          <span>طلبات نفس الحي</span>
+        </a>
       </div>
-      <span style="font-size: 12px; color: #5B6661">الإذن المطبوع عليه باركود كل صنف لإدخال الفاتورة بالمسدس. ملف Excel فيه الباركود والكمية والسعر للاستيراد في البرنامج الحسابي.</span>
+      <span style="font-size: 12px; color: #5B6661">الإذن المطبوع عليه باركود كل صنف لإدخال الفاتورة بالمسدس. ملف Excel فيه الباركود والكمية والسعر للاستيراد في البرنامج الحسابي. «طلبات نفس الحي» تفتح الطلبات الجاهزة في حيّ هذا المحل لتجمعها في مشوار واحد.</span>
     </div>
+
+    <sc-if value="{{isOut}}" hint-placeholder-val="{{ false }}">
+      <div style="background: #FFFFFF; border: 1px solid #E3E7E4; border-radius: 16px; padding: 14px; display: flex; flex-direction: column; gap: 10px">
+        <span style="font-size: 15px; font-weight: 700">نتيجة التوصيل</span>
+        <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px">
+          <sc-for list="{{outcomes}}" as="oc" hint-placeholder-count="4">
+            <button type="button" onClick="{{oc.pick}}" aria-pressed="{{oc.on}}" style="min-height: 52px; border-radius: 12px; border: 2px solid {{oc.border}}; background: {{oc.bg}}; color: {{oc.fg}}; font-size: 14px; font-weight: 700; cursor: pointer; padding: 6px 8px">{{oc.label}}</button>
+          </sc-for>
+        </div>
+        <span style="font-size: 12px; line-height: 1.7; color: #5B6661">{{outcomeHelp}}</span>
+        <sc-if value="{{outcomeFailed}}" hint-placeholder-val="{{ false }}">
+          <div style="display: flex; flex-direction: column; gap: 6px">
+            <label for="failNote" style="font-size: 14px; font-weight: 600">ملاحظة <span style="font-weight: 400; color: #5B6661">(اختياري)</span></label>
+            <input id="failNote" type="text" placeholder="مثلًا: المحل يفتح بعد العصر" style="height: 48px; box-sizing: border-box; border: 1px solid #C9D1CC; border-radius: 12px; padding: 0 12px; font-size: 15px; background: #FFFFFF; color: #17201C">
+          </div>
+        </sc-if>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{isFailed}}" hint-placeholder-val="{{ false }}">
+      <div style="display: flex; gap: 10px; align-items: flex-start; background: #FBE9E5; color: #6B1F0F; border-radius: 14px; padding: 14px; font-size: 14px; line-height: 1.7">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex-shrink: 0; margin-top: 2px"><circle cx="12" cy="12" r="9"></circle><path d="M12 8v5"></path><path d="M12 16.5h.01"></path></svg>
+        <span><span style="font-weight: 700">لم يُسلَّم: {{failLabel}}.</span> الطلب الآن في «تحتاج متابعة»، ولا تُحسب عليه عمولة حتى يُسلَّم فعليًا.</span>
+      </div>
+    </sc-if>
 
     <sc-if value="{{isDelivered}}" hint-placeholder-val="{{ false }}">
       <div style="display: flex; gap: 10px; align-items: center; background: #E3F1EB; color: #0B4A3B; border-radius: 14px; padding: 14px; font-size: 15px; font-weight: 600">
@@ -117,10 +157,17 @@ button,select{font-family:inherit}
     </sc-if>
   </div>
 
+  <sc-if value="{{isFailed}}" hint-placeholder-val="{{ false }}">
+    <div style="padding: 10px 16px 16px; background: #FFFFFF; border-top: 1px solid #E3E7E4; flex-shrink: 0; display: flex; flex-direction: column; gap: 6px">
+      <button type="button" onClick="{{retry}}" style="height: 54px; border: 0; border-radius: 14px; font-size: 17px; font-weight: 700; cursor: pointer; background: {{accent}}; color: #FFFFFF">إعادته للتوصيل</button>
+      <button type="button" style="height: 44px; border: 0; background: transparent; color: #A1361B; font-size: 14px; font-weight: 600; cursor: pointer">إلغاء الطلب</button>
+    </div>
+  </sc-if>
+
   <sc-if value="{{notDelivered}}" hint-placeholder-val="{{ true }}">
     <div style="padding: 10px 16px 16px; background: #FFFFFF; border-top: 1px solid #E3E7E4; flex-shrink: 0; display: flex; flex-direction: column; gap: 6px">
       <sc-if value="{{showHint}}" hint-placeholder-val="{{ true }}">
-        <span style="font-size: 13px; color: #5B6661; text-align: center">جهّز جميع الأصناف قبل الإرسال للتوصيل</span>
+        <span style="font-size: 13px; color: #5B6661; text-align: center">{{hintText}}</span>
       </sc-if>
       <button type="button" onClick="{{advance}}" disabled="{{blocked}}" style="height: 54px; border: 0; border-radius: 14px; font-size: 17px; font-weight: 700; cursor: pointer; background: {{btnBg}}; color: {{btnFg}}">{{btnLabel}}</button>
       <button type="button" style="height: 44px; border: 0; background: transparent; color: #A1361B; font-size: 14px; font-weight: 600; cursor: pointer">إلغاء الطلب</button>
@@ -132,7 +179,13 @@ button,select{font-family:inherit}
 class Component extends DCLogic {
   constructor(props) {
     super(props);
-    this.state = { checked: { 0: true, 1: true }, stage: 'preparing', msg: 'تم: [اسم الصنف 4] — 2 شيكارة' };
+    this.state = { checked: { 0: true, 1: true }, avail: {}, outcome: 'delivered', stage: 'preparing', msg: 'تم: [اسم الصنف 4] — 2 شيكارة' };
+  }
+  setAvail(i, max, raw) {
+    const a = Object.assign({}, this.state.avail);
+    let v = parseInt(raw, 10);
+    if (isNaN(v)) { delete a[i]; } else { a[i] = Math.max(0, Math.min(max, v)); }
+    this.setState({ avail: a });
   }
   toggle(i) {
     const c = Object.assign({}, this.state.checked);
@@ -148,9 +201,14 @@ class Component extends DCLogic {
       { name: '[اسم الصنف 1]', unit: 'علبة', note: 'علبة واحدة', qty: 5, barcode: '6221000000014' }
     ];
     const stage = this.state.stage;
+    const outcomes = [['delivered', 'تم التسليم واستلام المبلغ'], ['closed', 'المحل مغلق'], ['refused', 'رفض الاستلام'], ['retry', 'إعادة المحاولة']];
     const isPreparing = stage === 'preparing';
+    const availOf = (i) => (this.state.avail[i] === undefined ? base[i].qty : this.state.avail[i]);
     const items = base.map((b, i) => {
-      const checked = !!this.state.checked[i] || !isPreparing;
+      const av = availOf(i);
+      const zero = av === 0;
+      const short = av < b.qty;
+      const checked = !!this.state.checked[i] || !isPreparing || zero;
       return {
         name: b.name,
         unit: b.unit,
@@ -161,14 +219,30 @@ class Component extends DCLogic {
         accent: accent,
         strike: checked ? 'line-through' : 'none',
         nameColor: checked ? '#5B6661' : '#17201C',
-        toggle: () => { if (isPreparing) this.toggle(i); }
+        toggle: () => { if (isPreparing && !zero) this.toggle(i); },
+        inputId: 'avail-' + i,
+        avail: av,
+        locked: !isPreparing,
+        border: short ? '#B4530F' : '#C9D1CC',
+        changed: short,
+        changeNote: zero ? 'غير متوفر — لن يُجهَّز' : 'متوفر ' + av + ' فقط من ' + b.qty,
+        noteColor: zero ? '#A1361B' : '#8A3B0A',
+        setAvail: (e) => this.setAvail(i, b.qty, e && e.target ? e.target.value : '')
       };
     });
+    const changedItems = base.map((b, i) => ({ b: b, av: availOf(i) })).filter((x) => x.av < x.b.qty);
+    const hasChanges = changedItems.length > 0;
+    const changeSummary = hasChanges ? 'عدّلت كمية ' + changedItems.length + (changedItems.length === 1 ? ' صنف' : ' أصناف') : '';
+    const notifyNote = stage === 'preparing'
+      ? 'سيصل التاجر إشعار بالتعديل وإجمالي الطلب الجديد عند إرسال الطلب للتوصيل.'
+      : 'أُرسل إشعار التعديل للتاجر.';
     const done = items.filter((it) => it.checked).length;
     const total = items.length;
     const ready = done === total;
     const statuses = {
       preparing: { label: 'قيد التجهيز', bg: '#FDF1DE', fg: '#8A3B0A' },
+      ready: { label: 'جاهز للتوصيل', bg: '#EDE7F6', fg: '#4A2C8A' },
+      failed: { label: 'تحتاج متابعة', bg: '#FBE9E5', fg: '#8A2A14' },
       out: { label: 'جاري التوصيل', bg: '#E6EEFB', fg: '#1E4FA8' },
       delivered: { label: 'تم التسليم', bg: '#E3F1EB', fg: '#0B5A47' }
     };
@@ -185,17 +259,40 @@ class Component extends DCLogic {
       pillFg: s.fg,
       isPreparing: isPreparing,
       isDelivered: stage === 'delivered',
-      notDelivered: stage !== 'delivered',
-      showDriver: stage !== 'delivered',
-      showHint: blocked,
+      notDelivered: stage !== 'delivered' && stage !== 'failed',
+      isOut: stage === 'out',
+      isFailed: stage === 'failed',
+      failLabel: (outcomes.find((o) => o[0] === this.state.outcome) || [])[1] || '',
+      outcomes: outcomes.map((o) => {
+        const on = o[0] === this.state.outcome;
+        const good = o[0] === 'delivered';
+        return {
+          label: o[1], on: on,
+          border: on ? (good ? accent : '#A1361B') : '#E3E7E4',
+          bg: on ? (good ? '#F1F8F5' : '#FBE9E5') : '#FFFFFF',
+          fg: on ? (good ? '#0B4A3B' : '#8A2A14') : '#17201C',
+          pick: () => this.setState({ outcome: o[0] })
+        };
+      }),
+      outcomeFailed: this.state.outcome !== 'delivered',
+      outcomeHelp: this.state.outcome === 'delivered'
+        ? 'تُسجَّل الطلبية مسلّمة، وتُضاف عمولة المندوب إلى حسابه.'
+        : 'يرجع الطلب إلى «تحتاج متابعة»، ولا تُحسب عمولة حتى التسليم الفعلي. تقدر تعيده للتوصيل أو تلغيه.',
+      retry: () => this.setState({ stage: 'ready', outcome: 'delivered' }),
+      showDriver: stage === 'ready' || stage === 'out',
+      showHint: blocked || stage === 'ready',
+      hintText: blocked ? 'جهّز جميع الأصناف قبل تأكيد التجهيز' : 'الطلب جاهز. أرسله وحده، أو اجمعه مع طلبات حيّه من «طلبات نفس الحي».',
       blocked: blocked,
       btnBg: blocked ? '#E3E7E4' : accent,
       btnFg: blocked ? '#5B6661' : '#FFFFFF',
-      btnLabel: isPreparing ? 'إرسال للتوصيل' : 'تم التسليم واستلام المبلغ',
+      btnLabel: isPreparing ? 'تم التجهيز' : (stage === 'ready' ? 'إرسال للتوصيل' : (this.state.outcome === 'delivered' ? 'تم التسليم واستلام المبلغ' : 'تسجيل: ' + ((outcomes.find((o) => o[0] === this.state.outcome) || [])[1] || ''))),
+      hasChanges: hasChanges,
+      changeSummary: changeSummary,
+      notifyNote: notifyNote,
       hasMsg: !!this.state.msg,
       msg: this.state.msg || '',
       scanNext: () => {
-        const idx = base.findIndex((b, i) => !this.state.checked[i]);
+        const idx = base.findIndex((b, i) => !this.state.checked[i] && availOf(i) > 0);
         if (idx < 0) return;
         const c = Object.assign({}, this.state.checked);
         c[idx] = true;
@@ -203,8 +300,9 @@ class Component extends DCLogic {
         this.setState({ checked: c, msg: 'تم: ' + b.name + ' — ' + b.qty + ' ' + b.unit });
       },
       advance: () => {
-        if (stage === 'preparing' && ready) this.setState({ stage: 'out' });
-        else if (stage === 'out') this.setState({ stage: 'delivered' });
+        if (stage === 'preparing' && ready) this.setState({ stage: 'ready' });
+        else if (stage === 'ready') this.setState({ stage: 'out' });
+        else if (stage === 'out') this.setState({ stage: this.state.outcome === 'delivered' ? 'delivered' : 'failed' });
       }
     };
   }
